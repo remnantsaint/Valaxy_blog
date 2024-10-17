@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>-西柿's Blog-</title>
+        <link>https://remsait.com/</link>
+        <description>折枝的树也能开花</description>
+        <lastBuildDate>Thu, 17 Oct 2024 15:40:09 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <image>
+            <title>-西柿's Blog-</title>
+            <url>https://cloudflare.remsait.com/img/QQ图片20240908121531.jpg</url>
+            <link>https://remsait.com/</link>
+        </image>
+        <copyright>CC BY-NC-SA 4.0 2024 © 西柿</copyright>
+        <atom:link href="https://remsait.com/feed.xml" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[集成方法]]></title>
+            <link>https://remsait.com/posts/ensemble-method</link>
+            <guid>https://remsait.com/posts/ensemble-method</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>集成方法 概述</h2>
+<ul>
+<li>概念：集成方法是对其他算法进行组合的一种形式</li>
+<li>通俗来说，当做重要决定时，大家可能都会考虑多个专家而不是一个人的意见，也就是说多方面考虑。</li>
+<li>集成方法：
+<ul>
+<li>投票选举法</li>
+</ul>
+</li>
+</ul>
+<br/><p>访问 <a href="https://remsait.com/posts/ensemble-method" target="_blank">https://remsait.com/posts/ensemble-method</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[Git基础教程]]></title>
+            <link>https://remsait.com/posts/git基础教程</link>
+            <guid>https://remsait.com/posts/git基础教程</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h3>Git命令简易汇总</h3>
+<pre><code class="language-shell">#初始化
+git init
+
+#添加到暂存区
+git add &lt;filename&gt;
+
+#提交文件
+git commit -m &quot;&lt;commit des</code></pre>
+<br/><p>访问 <a href="https://remsait.com/posts/git基础教程" target="_blank">https://remsait.com/posts/git基础教程</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[hexo初建站]]></title>
+            <link>https://remsait.com/posts/hexo初建站</link>
+            <guid>https://remsait.com/posts/hexo初建站</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<p><img src="https://blog-1310084410.cos.ap-beijing.myqcloud.com/img/202409101732702.png" alt=""><br>
+1.下载安装git与node.js</p>
+<br/><p>访问 <a href="https://remsait.com/posts/hexo初建站" target="_blank">https://remsait.com/posts/hexo初建站</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[linux一些命令]]></title>
+            <link>https://remsait.com/posts/linux一些命令</link>
+            <guid>https://remsait.com/posts/linux一些命令</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<p><code>du -sh</code>查看文件夹大小；<code>du -sh *</code>查看该文件夹下每个文件或文件夹的大小</p>
+<p><code>systemctl start &lt;service&gt;</code>开启服务<br>
+`systemctl enable &lt;se</p>
+<br/><p>访问 <a href="https://remsait.com/posts/linux一些命令" target="_blank">https://remsait.com/posts/linux一些命令</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[markdown的基础用法]]></title>
+            <link>https://remsait.com/posts/markdown的基础用法</link>
+            <guid>https://remsait.com/posts/markdown的基础用法</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h4>1.标题</h4>
+<p> 使用#后接空格表示标题,一共六级<br>
+ 例如 # 一级标题 ## 二级标题</p>
+<h4>2.字体</h4>
+<p> (1)斜体：<code>*123*</code>或者<code>_123_</code> 效</p>
+<br/><p>访问 <a href="https://remsait.com/posts/markdown的基础用法" target="_blank">https://remsait.com/posts/markdown的基础用法</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[valaxy版本升级指南]]></title>
+            <link>https://remsait.com/posts/valaxy版本升级指南</link>
+            <guid>https://remsait.com/posts/valaxy版本升级指南</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>前言</h2>
+<p>  我刚开始使用<code>valaxy</code>框架，并搭配<code>yun</code>主题时，这两者的版本都是<code>0.19.9</code>，此时在分类和标签界面会有一点小bug，当云游君推出新版本修复这个bug后，我迫不及待的想要更新版本，但是却没有更新博客框架和主题的经验，屡次碰壁后尝试更新<code>hexo</code>博客的方法并成功，以下为纪录。</p>
+<br/><p>访问 <a href="https://remsait.com/posts/valaxy版本升级指南" target="_blank">https://remsait.com/posts/valaxy版本升级指南</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[一些tips]]></title>
+            <link>https://remsait.com/posts/一些Tip</link>
+            <guid>https://remsait.com/posts/一些Tip</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<p>1.定义比较大的数组的时候（例如1e5），要放在全局变量，否则ide会提示段错误<br>
+2.ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);清除</p>
+<br/><p>访问 <a href="https://remsait.com/posts/一些Tip" target="_blank">https://remsait.com/posts/一些Tip</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[使用Apriori算法进行关联分析]]></title>
+            <link>https://remsait.com/posts/使用Apriori算法进行关联分析</link>
+            <guid>https://remsait.com/posts/使用Apriori算法进行关联分析</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>关联分析</h2>
+<p>  关联分析是一种在大规模数据集中寻找有趣关系的任务，这些关系可以有以下两种形式</p>
+<ul>
+<li>频繁项集：经常出现在一块的物品的集合</li>
+<li>关联规则：按时两种物品之间存在很强的关系</li>
+</ul>
+<br/><p>访问 <a href="https://remsait.com/posts/使用Apriori算法进行关联分析" target="_blank">https://remsait.com/posts/使用Apriori算法进行关联分析</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[使用FP-growth算法高效发现频繁项集]]></title>
+            <link>https://remsait.com/posts/使用FP-growth算法高效发现频繁项集</link>
+            <guid>https://remsait.com/posts/使用FP-growth算法高效发现频繁项集</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>前言</h2>
+<p>在[使用Apriori算法进行关联分析](<a href="https://remsait.com/posts/%E4%BD%BF%E7%94%A8Apriori%E7%AE%97%E6%B3%95%E8%25">https://remsait.com/posts/使用Apriori算法�%</a></p>
+<br/><p>访问 <a href="https://remsait.com/posts/使用FP-growth算法高效发现频繁项集" target="_blank">https://remsait.com/posts/使用FP-growth算法高效发现频繁项集</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[使用archlinux参考文章]]></title>
+            <link>https://remsait.com/posts/使用archlinux参考文章</link>
+            <guid>https://remsait.com/posts/使用archlinux参考文章</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<p>arch wiki：<a href="https://wiki.archlinuxcn.org/wiki/%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97">https://wiki.archlinuxcn.org/wiki/安装指南</a></p>
+<p>安装参考：&lt;<a href="https://b">https://b</a></p>
+<br/><p>访问 <a href="https://remsait.com/posts/使用archlinux参考文章" target="_blank">https://remsait.com/posts/使用archlinux参考文章</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[决策树]]></title>
+            <link>https://remsait.com/posts/决策树</link>
+            <guid>https://remsait.com/posts/决策树</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>前言</h2>
+<p>  经过研一第一个月的学习汇报，导师让我选择一个机器学习算法和生物信息数据库弄懂，并且在一个月后的组会上汇报，借此我选择了决策树这个算法，完善这篇文章。</p>
+<br/><p>访问 <a href="https://remsait.com/posts/决策树" target="_blank">https://remsait.com/posts/决策树</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[删除链表的倒数第N个结点]]></title>
+            <link>https://remsait.com/posts/删除链表的倒数第N个结点</link>
+            <guid>https://remsait.com/posts/删除链表的倒数第N个结点</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<p><img src="https://cloudflare.remsait.com/img/20230401072816.png" alt=""><br>
+用一趟扫描实现：<br>
+题解：本题是力扣上的题，注意力扣上说的头结点是指首元结点，带有</p>
+<br/><p>访问 <a href="https://remsait.com/posts/删除链表的倒数第N个结点" target="_blank">https://remsait.com/posts/删除链表的倒数第N个结点</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[利用PCA简化数据]]></title>
+            <link>https://remsait.com/posts/利用PCA简化数据</link>
+            <guid>https://remsait.com/posts/利用PCA简化数据</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>降维技术</h2>
+<h3>场景</h3>
+<ul>
+<li>在电视上看足球比赛，显示器上会有一个球</li>
+<li>显示器大概包含了 100万 像素点，而球则可能是由较少的像素点组成，例如说一千像素点</li>
+<li>人们实时将显示器上的百万像素转换</li>
+</ul>
+<br/><p>访问 <a href="https://remsait.com/posts/利用PCA简化数据" target="_blank">https://remsait.com/posts/利用PCA简化数据</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[利用SVD简化数据]]></title>
+            <link>https://remsait.com/posts/利用SVD简化数据</link>
+            <guid>https://remsait.com/posts/利用SVD简化数据</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>SVD（奇异值分解） 概述</h2>
+<p>  提取信息的一种方法，可以把 SVD 看成是从噪声数据中抽取相关特征。奇异值相当于方阵中的特征值，奇异值分解相当于方阵中的特征值分解。从生物信息学到金融学</p>
+<br/><p>访问 <a href="https://remsait.com/posts/利用SVD简化数据" target="_blank">https://remsait.com/posts/利用SVD简化数据</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[反转部分链表]]></title>
+            <link>https://remsait.com/posts/反转部分链表</link>
+            <guid>https://remsait.com/posts/反转部分链表</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<p>难度：中等<br>
+题目链接：<a href="https://leetcode.cn/problems/reverse-linked-list-ii/description/">https://leetcode.cn/problems/reverse-linked-list-ii/description/</a><br>
+题意：反转链表的一部分，从left到rig</p>
+<br/><p>访问 <a href="https://remsait.com/posts/反转部分链表" target="_blank">https://remsait.com/posts/反转部分链表</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[反转链表]]></title>
+            <link>https://remsait.com/posts/反转链表</link>
+            <guid>https://remsait.com/posts/反转链表</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<p>难度：简单<br>
+题目链接：<a href="https://leetcode.cn/problems/reverse-linked-list/description/">https://leetcode.cn/problems/reverse-linked-list/description/</a><br>
+题意：给出一个链表的头结点（首元结点），将该链表</p>
+<br/><p>访问 <a href="https://remsait.com/posts/反转链表" target="_blank">https://remsait.com/posts/反转链表</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[合并有序链表]]></title>
+            <link>https://remsait.com/posts/合并有序链表</link>
+            <guid>https://remsait.com/posts/合并有序链表</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<p>难度：简单<br>
+链接：<a href="https://leetcode.cn/problems/merge-two-sorted-lists/">https://leetcode.cn/problems/merge-two-sorted-lists/</a><br>
+题意：给两个有序链表，将其合并为一个链表并返回首元结点。<br>
+题解：<br>
+&amp;e</p>
+<br/><p>访问 <a href="https://remsait.com/posts/合并有序链表" target="_blank">https://remsait.com/posts/合并有序链表</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[回文数]]></title>
+            <link>https://remsait.com/posts/回文数</link>
+            <guid>https://remsait.com/posts/回文数</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>[NOIP1999 普及组] 回文数</h2>
+<h2>题目描述</h2>
+<p>若一个数（首位不为零）从左向右读与从右向左读都一样，我们就将其称之为回文数。</p>
+<p>例如：给定一个十进制数 $56$，将 $56$ 加 $</p>
+<br/><p>访问 <a href="https://remsait.com/posts/回文数" target="_blank">https://remsait.com/posts/回文数</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[图的存储]]></title>
+            <link>https://remsait.com/posts/图的存储</link>
+            <guid>https://remsait.com/posts/图的存储</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<p>想要对图进行操作，就得先学习图的存储方式。</p>
+<p>本文中用$n$代指图的点数，$m$代指图的边数（注意，点的标号不会超过n）</p>
+<h3>直接存边</h3>
+<p>使用一个数组来存边，数组中每个元素都包含一条边的起点与</p>
+<br/><p>访问 <a href="https://remsait.com/posts/图的存储" target="_blank">https://remsait.com/posts/图的存储</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[大数据与MapReduce]]></title>
+            <link>https://remsait.com/posts/大数据与MapReduce</link>
+            <guid>https://remsait.com/posts/大数据与MapReduce</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>大数据</h2>
+<h3>大数据 概述</h3>
+<p>  数据很大，本地存不下，用云端多台电脑存，收集到的数据远远超出我们的处理能力</p>
+<h3>大数据 场景</h3>
+<pre><code class="language-text">假如你为一家网络购物商店工作，很多用</code></pre>
+<br/><p>访问 <a href="https://remsait.com/posts/大数据与MapReduce" target="_blank">https://remsait.com/posts/大数据与MapReduce</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[对链表插入排序]]></title>
+            <link>https://remsait.com/posts/对链表插入排序</link>
+            <guid>https://remsait.com/posts/对链表插入排序</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<p>难度：中等<br>
+题目链接：<a href="https://leetcode.cn/problems/insertion-sort-list/">LeetCode 147. Insertion Sort List</a><br>
+题</p>
+<br/><p>访问 <a href="https://remsait.com/posts/对链表插入排序" target="_blank">https://remsait.com/posts/对链表插入排序</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[我的ff14之旅]]></title>
+            <link>https://remsait.com/posts/我的ff14之旅</link>
+            <guid>https://remsait.com/posts/我的ff14之旅</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<p>What's past is prologue。<br>
+                     ———Shakespeare</p>
+<br/><p>访问 <a href="https://remsait.com/posts/我的ff14之旅" target="_blank">https://remsait.com/posts/我的ff14之旅</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[找出环形链表的入环第一个结点]]></title>
+            <link>https://remsait.com/posts/找出环形链表的入环第一个结点</link>
+            <guid>https://remsait.com/posts/找出环形链表的入环第一个结点</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<p>难度：中等<br>
+链接：<a href="https://leetcode.cn/problems/linked-list-cycle-ii/">Linked List Cycle II</a><br>
+题意：给一个可能有环的链表，若</p>
+<br/><p>访问 <a href="https://remsait.com/posts/找出环形链表的入环第一个结点" target="_blank">https://remsait.com/posts/找出环形链表的入环第一个结点</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[排序]]></title>
+            <link>https://remsait.com/posts/排序</link>
+            <guid>https://remsait.com/posts/排序</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<p><img src="https://cloudflare.remsait.com/img/image-20230324210604464.png" alt="image-20230324210604464"></p>
+<h4>排</h4>
+<br/><p>访问 <a href="https://remsait.com/posts/排序" target="_blank">https://remsait.com/posts/排序</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[朴素贝叶斯]]></title>
+            <link>https://remsait.com/posts/朴素贝叶斯</link>
+            <guid>https://remsait.com/posts/朴素贝叶斯</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h4>朴素贝叶斯概述</h4>
+<p>  贝叶斯分类是一类分类算法的总称，这类算法均以贝叶斯定理为基础，故统称为贝叶斯分类。首先需要介绍贝叶斯分类算法的基础——贝叶斯定理。最后，通过实例来讨论贝叶斯</p>
+<br/><p>访问 <a href="https://remsait.com/posts/朴素贝叶斯" target="_blank">https://remsait.com/posts/朴素贝叶斯</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[树回归]]></title>
+            <link>https://remsait.com/posts/树回归</link>
+            <guid>https://remsait.com/posts/树回归</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>树回归 概述</h2>
+<ul>
+<li>树回归可以用于分类，也可以用于回归</li>
+</ul>
+<h3>树回归 场景</h3>
+<p>  线性回归有一些强大的方法，到那时这些方法创建的模型需要拟合所有的样本点（局部加权线性回归除外）。当拥有</p>
+<br/><p>访问 <a href="https://remsait.com/posts/树回归" target="_blank">https://remsait.com/posts/树回归</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[生信linux]]></title>
+            <link>https://remsait.com/posts/生信linux</link>
+            <guid>https://remsait.com/posts/生信linux</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<p>刚开学，我想尝试一下用ubuntu来学习生信方面的知识，安装完ubuntu20.04版本后，要用xshell连接，但是ubuntu有点特别，需要开启open-ssh服务，用以下命令`sudo apt</p>
+<br/><p>访问 <a href="https://remsait.com/posts/生信linux" target="_blank">https://remsait.com/posts/生信linux</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[腾讯云cos图床+cloudflare+Picgo]]></title>
+            <link>https://remsait.com/posts/腾讯云cos图床+cloudflare+Picgo</link>
+            <guid>https://remsait.com/posts/腾讯云cos图床+cloudflare+Picgo</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>前言</h2>
+<p>以前一直是用github作为图床，同时使用免费cdn，但是缺点就是偶尔会加载不出来图片，科学上网后倒是可以正常看，总之很烦，手机看也是基本加载不出来图片。</p>
+<p>现在考虑用存储桶来存储图片，同时使用 cloudflare 代理网站来提供 cdn 加速。我的域名没有备案，所以就得腾讯云 cos 中国外的存储桶</p>
+<br/><p>访问 <a href="https://remsait.com/posts/腾讯云cos图床+cloudflare+Picgo" target="_blank">https://remsait.com/posts/腾讯云cos图床+cloudflare+Picgo</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[解决vercel被墙的问题]]></title>
+            <link>https://remsait.com/posts/解决vercel被墙的问题</link>
+            <guid>https://remsait.com/posts/解决vercel被墙的问题</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>前言</h2>
+<p>  我在使用 valaxy 框架，搭配 yun 主题来搭建自己的博客，根据官方文档，把评论插件<code>waline</code>和追番插件<code>bangumi</code>都配置好后，两者都部署在<code>vercel</code>网站上。<br>
+  但是 vercel 网站上的应用有可能因为 dns 污染而被墙，以下是只能将一者能在无 VNP 下访问的解决办法。</p>
+<br/><p>访问 <a href="https://remsait.com/posts/解决vercel被墙的问题" target="_blank">https://remsait.com/posts/解决vercel被墙的问题</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[解决学习通鼠标移开暂停]]></title>
+            <link>https://remsait.com/posts/解决学习通鼠标移开暂停</link>
+            <guid>https://remsait.com/posts/解决学习通鼠标移开暂停</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<p>  在电脑浏览器中用学习通看网课，偶尔有的网课会设置鼠标移开后就自动暂停视频，对想节省时间的同学十分不友好，以下是解决办法</p>
+<p>在浏览器中点击<code>f12</code>进入开发者面板，点击顶栏的源代码，</p>
+<br/><p>访问 <a href="https://remsait.com/posts/解决学习通鼠标移开暂停" target="_blank">https://remsait.com/posts/解决学习通鼠标移开暂停</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[迭代&递归&分治]]></title>
+            <link>https://remsait.com/posts/迭代-递归-分治</link>
+            <guid>https://remsait.com/posts/迭代-递归-分治</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h4>迭代</h4>
+<p>1.迭代法称为辗转法，不断的用变量旧值求出新值，即对一组指令循环执行，最终得到新值作为结果。<br>
+2.在代码中表现为在一个循环内，不断循环最终得到结果。</p>
+<h4>递归</h4>
+<p>1.定义：递归</p>
+<br/><p>访问 <a href="https://remsait.com/posts/迭代-递归-分治" target="_blank">https://remsait.com/posts/迭代-递归-分治</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[重排链表]]></title>
+            <link>https://remsait.com/posts/重排链表</link>
+            <guid>https://remsait.com/posts/重排链表</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<p>难度：中等<br>
+题目链接：<a href="https://leetcode.cn/problems/reorder-list/">https://leetcode.cn/problems/reorder-list/</a><br>
+![](<a href="https://cloudflare.remsait.com/img/2023">https://cloudflare.remsait.com/img/2023</a></p>
+<br/><p>访问 <a href="https://remsait.com/posts/重排链表" target="_blank">https://remsait.com/posts/重排链表</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[链表]]></title>
+            <link>https://remsait.com/posts/链表</link>
+            <guid>https://remsait.com/posts/链表</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<p>示例代码：包括两种方法建立，查找，删除，输出，反转，找中点，交叉合并</p>
+<pre><code class="language-c++">#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+
+int n, i;
+int a[1</code></pre>
+<br/><p>访问 <a href="https://remsait.com/posts/链表" target="_blank">https://remsait.com/posts/链表</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[链表排序]]></title>
+            <link>https://remsait.com/posts/链表排序</link>
+            <guid>https://remsait.com/posts/链表排序</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<p>难度：中等<br>
+链接：<a href="https://leetcode.cn/problems/sort-list/">Sort List</a><br>
+题意：在时间复杂度为O(nlogn)内，空间复杂度为O(1)内对给定首元结</p>
+<br/><p>访问 <a href="https://remsait.com/posts/链表排序" target="_blank">https://remsait.com/posts/链表排序</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[预测数值型数据：回归]]></title>
+            <link>https://remsait.com/posts/预测数值型数据：回归</link>
+            <guid>https://remsait.com/posts/预测数值型数据：回归</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>回归 概述</h2>
+<p>前面集中分类的目标变量是标称型数据，而回归是对连续型数据作出处理，回归的目的是预测数值型数据的目标值</p>
+<h2>回归 场景</h2>
+<p>回归的目的是预测数值型的目标值，最直接的办法是依据输入写出一</p>
+<br/><p>访问 <a href="https://remsait.com/posts/预测数值型数据：回归" target="_blank">https://remsait.com/posts/预测数值型数据：回归</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[DFS_图论]]></title>
+            <link>https://remsait.com/posts/DFS_图论</link>
+            <guid>https://remsait.com/posts/DFS_图论</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h4>引入</h4>
+<p>DFS全称是<a href="https://en.wikipedia.org/wiki/Depth-first_search">Depth First Search</a>，中文名是深度优先搜索，是一</p>
+<br/><p>访问 <a href="https://remsait.com/posts/DFS_图论" target="_blank">https://remsait.com/posts/DFS_图论</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[DFS_搜索]]></title>
+            <link>https://remsait.com/posts/DFS_搜索</link>
+            <guid>https://remsait.com/posts/DFS_搜索</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<p>  DFS为图论中的概念。在<strong>搜索算法</strong>中，该词常指利用递归函数方便地暴力枚举的算法，与图论中的DFS算法有一定相似之处，但并不完全相同<br>
+  比如一种例题，n 等于 m 个数</p>
+<br/><p>访问 <a href="https://remsait.com/posts/DFS_搜索" target="_blank">https://remsait.com/posts/DFS_搜索</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[Github使用指南]]></title>
+            <link>https://remsait.com/posts/Github使用指南</link>
+            <guid>https://remsait.com/posts/Github使用指南</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h4>创建Github账号，记住Github用户名、邮箱、密码（略）</h4>
+<h4>下载安装Git（略）</h4>
+<h4>配置Git</h4>
+<p>打开git bash（可以在开始界面找到，或者在文件夹空白处右键选择打</p>
+<br/><p>访问 <a href="https://remsait.com/posts/Github使用指南" target="_blank">https://remsait.com/posts/Github使用指南</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[Hexo博客迁移至Valaxy]]></title>
+            <link>https://remsait.com/posts/Hexo博客迁移至Valaxy</link>
+            <guid>https://remsait.com/posts/Hexo博客迁移至Valaxy</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<p>Valaxy真的很棒<br>
+解决了不少困扰已久的问题</p>
+<br/><p>访问 <a href="https://remsait.com/posts/Hexo博客迁移至Valaxy" target="_blank">https://remsait.com/posts/Hexo博客迁移至Valaxy</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[K-Means 聚类算法]]></title>
+            <link>https://remsait.com/posts/K-Means 聚类算法</link>
+            <guid>https://remsait.com/posts/K-Means 聚类算法</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>聚类</h2>
+<h3>概念</h3>
+<p>  聚类就是将一个具有相似特征的数据集合自动归类到一起，称为一个簇，簇内的对象越相似，聚类的效果越好。<br>
+  聚类是一种无监督学习方法，不需要预先标注好</p>
+<br/><p>访问 <a href="https://remsait.com/posts/K-Means 聚类算法" target="_blank">https://remsait.com/posts/K-Means 聚类算法</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[KNN近邻]]></title>
+            <link>https://remsait.com/posts/KNN近邻</link>
+            <guid>https://remsait.com/posts/KNN近邻</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h4>KNN算法原理</h4>
+<ol>
+<li>一句话总结：“近朱者赤近墨者黑”</li>
+<li>KNN是一个简单的无显示学习过程，非泛化学习的监督学习模型。在分类和回归中均有应用。</li>
+<li>先给出已知的数据集，计算未知数据与</li>
+</ol>
+<br/><p>访问 <a href="https://remsait.com/posts/KNN近邻" target="_blank">https://remsait.com/posts/KNN近邻</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[LRU缓存]]></title>
+            <link>https://remsait.com/posts/LRU缓存</link>
+            <guid>https://remsait.com/posts/LRU缓存</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<p><img src="https://cloudflare.remsait.com/img/20230410194125.png" alt=""><br>
+难度：中等<br>
+链接：[LeetCode 146. LRU Cache](https</p>
+<br/><p>访问 <a href="https://remsait.com/posts/LRU缓存" target="_blank">https://remsait.com/posts/LRU缓存</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[Logistic回归]]></title>
+            <link>https://remsait.com/posts/Logistic回归</link>
+            <guid>https://remsait.com/posts/Logistic回归</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>Logistic回归概念</h2>
+<h3>概述</h3>
+<p>  Logistic回归又叫逻辑回归，实际上是用来做分类，主要思想是根据现有数据对分类边界线建立回归公式，以此进行分类</p>
+<h3>Sigmoi</h3>
+<br/><p>访问 <a href="https://remsait.com/posts/Logistic回归" target="_blank">https://remsait.com/posts/Logistic回归</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[支持向量机]]></title>
+            <link>https://remsait.com/posts/SVM</link>
+            <guid>https://remsait.com/posts/SVM</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>支持向量机 概述</h2>
+<p>支持向量机（SVM）是一种监督学习算法</p>
+<ul>
+<li>支持向量 就是离分隔超平面最近的那些点。</li>
+<li>机 就是表示一种算法，而不是表示机器</li>
+</ul>
+<h2>支持向量机 场景</h2>
+<ul>
+<li>要给左右两边的点</li>
+</ul>
+<br/><p>访问 <a href="https://remsait.com/posts/SVM" target="_blank">https://remsait.com/posts/SVM</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[Vim简单应用]]></title>
+            <link>https://remsait.com/posts/Vim简单应用</link>
+            <guid>https://remsait.com/posts/Vim简单应用</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h5>1、模式转换</h5>
+<ul>
+<li>命令行模式可以输入<code>i、a</code>等进入编辑模式</li>
+<li>编辑模式点击<code>esc</code>按键进入命令行模式</li>
+<li>命令行模式点击<code>shift+;</code>进入低行模式</li>
+</ul>
+<h5>2、编辑模式</h5>
+<br/><p>访问 <a href="https://remsait.com/posts/Vim简单应用" target="_blank">https://remsait.com/posts/Vim简单应用</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+        <item>
+            <title><![CDATA[Vscode配置C++环境]]></title>
+            <link>https://remsait.com/posts/Vscode配置C++环境</link>
+            <guid>https://remsait.com/posts/Vscode配置C++环境</guid>
+            <pubDate>Thu, 17 Oct 2024 15:38:28 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>前言</h2>
+<p>  很早以前配置过VScode上的C++环境，这次换电脑用新的方法重新配置一遍<br>
+  PS：单纯想用VScode运行C++代码来做点题</p>
+<br/><p>访问 <a href="https://remsait.com/posts/Vscode配置C++环境" target="_blank">https://remsait.com/posts/Vscode配置C++环境</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (西柿)</author>
+        </item>
+    </channel>
+</rss>
