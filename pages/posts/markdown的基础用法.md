@@ -52,8 +52,19 @@ top:
 &emsp;(2)若需要自定义链接名称，用`[连接名称](链接地址)`来表示，例如：`[我的博客](https://remnantsaint.github.io)`，注意用`https://`
 &emsp;(3)高级链接：用1作为变量：`[Goole][1]`，最后在结尾加上`[1]: http://www.goole.com/`
 #### 9.图片
-(1)用法：`![alt 属性文本](图片地址 "可选标题")`，其中属性文本是替代文字，可选标题可以没有。高级用法和链接一样。
-(2)markdown无法指定图片的高度和宽度，可以用普通的`<img>`标签：`<img decoding="async" src="http://static.runoob.com/images/runoob-logo.png" width="50%">`
+(1)用法：`![alt 属性文本](图片地址 "可选标题")`，其中属性文本是替代文字，可选标题可以没有。高级用法和链接一样。  
+(2)markdown无法指定图片的高度和宽度，可以用普通的`<img>`标签：`<img decoding="async" src="http://static.runoob.com/images/runoob-logo.png" width="50%">`  
+(3)示例：
+```
+<img src="https://cloudflare.remsait.com/img/DDGEmb202509221445950.png"  alt="404" title=""  />
+<center><div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 2px;">
+      模型架构
+  	</div>
+</center>
+```
 
 #### 10.表格
 &emsp;markdown制作表格用|来分隔不同的单元格，使用-分隔表头和其他行，例如：
@@ -100,7 +111,7 @@ top:
   写 markdown 文件时，每一行先按两下空格，然后写下一段的时候按两下回车（每一段之间空一行，每一行最前面要有两个空格），这样在网页渲染后每段就会空出一行  
 
   每行的末尾可以按两下空格来加一个换行符，不过按上述写法可以不加  
-  
+
   想要网页中每行前面有空格的话，就加上 `&emsp;`
 
 
