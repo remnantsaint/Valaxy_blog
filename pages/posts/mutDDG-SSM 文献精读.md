@@ -7,10 +7,9 @@ time_warning: true
 cover: 
 top: 
 tags: 
- - ddG
+ - ddg
 categories: 
- - 深度学习
- - 文献精读
+ - 生物信息
 # author: @Remsait
 ---
 # 基于自监督方法学习到的几何表征预测突变诱导的蛋白质稳定性变化

@@ -9,8 +9,7 @@ top:
 tags: 
  - ddg
 categories: 
- - 深度学习
- - 文献精读
+ - 生物信息
 # author: @Remsait
 ---
 # DDGemb：利用嵌入和深度学习预测单点和多点变异对蛋白质稳定性的影响
@@ -71,7 +70,7 @@ categories:
   该矩阵 D 将作为下游 ΔΔG 预测架构的输入。
 ### 基于 Transformer 的 ΔΔG 预测网络
   DDGemb架构的其余部分旨在从编码了蛋白质突变的输入矩阵D出发，预测出一个ΔΔG值。最终模型的超参数是根据表1中报告的不同配置，通过交叉验证进行优化确定的。在完成优化后，最终选定的模型是 model4 ，其结构如下所述。表1 如下：  
-  
+
 | Model  | Model configuration                  | PCC         | RMSE        | MAE         |
 |--------|---------------------------------------|-------------|-------------|-------------|
 | Model0 | m = 32,  h = 2,  s = 128              | 0.68 ± 0.01 | 1.27 ± 0.10 | 0.97 ± 0.09 |
@@ -82,9 +81,9 @@ categories:
 | Model5 | m = 256, h = 8,  s = 1024             | 0.71 ± 0.02 | 1.23 ± 0.12 | 0.95 ± 0.10 |
 
   输入矩阵 D 首先经过一个一维卷积层（1D convolution layer）进行处理，该卷积层包含 m = 128 个大小为 w = 15 的滤波器（filters），并使用 ReLU 激活函数。该一维卷积层通过一系列宽度为 w 的滑动滤波器，将高维度的输入数据投影到大小为 m 的低维空间，从而提取局部上下文信息。一维卷积层的输出是一个维度为 L × m 的矩阵 C。 （每个卷积核权重不同，128个一维卷积核
-  
+
   矩阵 C 随后被输入到一个 Transformer 编码器层（Vaswani 等，2017）中。该编码器层采用级联结构，包含一个具有八个注意力头（h）的多头注意力层、残差连接以及一个逐位置的前馈神经网络（FFN）。Transformer 编码器负责计算输入序列上的自注意力，生成能够综合考虑输入序列中不同位置之间相互关系的输出表示。
-  
+
   此处采用的架构直接源自原始的 Transformer 定义。形式上，给定维度为 L × m 的输入序列 C，多头注意力层的每个头 i 会使用三个可学习的权重矩阵，分别称为 $A_Q^i$（查询矩阵）、 $A_K^i$（键矩阵）和 $A_V^i$（值矩阵），每个矩阵的维度均为 m × r；其中 r = m/h（在本例中 r = 16），h 为注意力头的数量（此处设为 8）。输入矩阵 C 首先通过 $A_Q^i$、$A_K^i$ 和 $A_V^i$ 进行如下投影：（矩阵QKV 128 × 16 ，C是 L × 128   
   $$Q^i = C \cdot A_Q^i$$
   $$K^i = C \cdot A_K^i$$
@@ -94,11 +93,11 @@ categories:
   来自不同注意力头的各个 Zi 随后被拼接起来，与一个维度为 m × m 的输出权重矩阵 $A_O$ 相乘，然后将结果通过残差连接加到输入矩阵 C 上。（拼接后是 L × 128，即 L × m  
   $$Z = [Z^1, Z^2,....., Z^h] \cdot A_O + C$$
   其中 [] 表示按特征维度拼接操作，得到的输出矩阵 Z 的维度为 L × m（与输入矩阵 C 的维度相同
-  
+
   最终的 Transformer 编码器输出 F 是一个维度为 L × m 的矩阵，通过将一个逐位置的前馈神经网络（FNN）独立地应用于矩阵 Z 的每个位置（1 <= j <= L ），并添加残差连接得到。换句话说，F 的每一行 $f_j$ 按如下方式计算：
   $$f_j = FFN(z_j) + z_j = ReLU(z_j \cdot W_1 + b_1) \cdot W_2 + b_2 + z_j$$
   其中，ReLU 是激活函数，定义为 g(x) = max(0, x) ，$W_1, b_1, W_2, b_2$ 分别是前馈神经网络中与位置无关的权重参数和偏置项，其维度分别为 m×s, 1×s, s×m, 1×m，本文中，我们将逐位置前馈网络隐藏层的维度 s 设为 512
-  
+
   Transformer 编码器的输出矩阵 F 随后通过全局平均池化和全局最大池化层被压缩为两个一维向量，分别记为 pave 和 pmax ，这两个池化操作作用于矩阵 F 的第一个维度 L （此时 F 表示序列中每个氨基酸位置的高级特征，但是要预测的是一个值，所以用池化把 L 行压缩成 1 行  
   $$p_{ave}(F) = (1/L\sum_{j = 1}^{L} f_{j1},....,1/L\sum_{j = 1}^{L} f_{jm})$$
   $$p_{max}(F) = (max_jf_{j1},...., max_jf_{jm})$$
@@ -129,13 +128,13 @@ categories:
 ## 结果
 ### 在 S2450 数据集上的交叉验证结果
   在首次实验中，我们在 S2450 数据集上进行了 5 折交叉验证。为此，我们采用 Fariselli 等人（2015）提出的最严格的数据划分方法，即将同一蛋白质上的所有突变保留在同一个交叉验证子集中，并将序列相似度超过 25% 的蛋白质也划分到同一子集中。序列比对使用的是全长 UniProt 序列。
-  
+
   综合考虑平均皮尔逊相关系数（PCC）、均方根误差（RMSE）和平均绝对误差（MAE）及其对应的标准差，性能最优的模型是 Model4 架构。该架构包含 128 个一维卷积滤波器、8 个 Transformer 编码器注意力头，以及 Transformer 编码器前馈网络（FFN）中 512 个隐藏单元（见表 1）。因此，我们选择该配置作为最终模型。
 ### 在 S669 数据集上对单点突变的预测
   我们使用通用基准数据集 S669，将 DDGemb 与近年来提出的多种先进方法进行了比较。21 种不同方法的结果来自 (Pancotti et al. 2022)，除了本文提出的 DDGemb、PROSTATA (Umerenkov et al. 2023)、THPLM (Gong et al. 2023) 和 ThermoMPNN (Dieckhaus et al. 2024)，这些方法的结果取自其各自的论文。
-  
+
   参与比较的方法包括九种基于序列的预测工具，即 INPS (Fariselli et al. 2015)、ACDC-NN-Seq (Pancotti et al. 2022)、DDGun (Montanucci et al. 2019)、I-Mutant3-Seq (Capriotti et al. 2005)、SAAFEC-SEQ (Li et al. 2021)、MUPro (Cheng et al. 2006)、PROSTATA (Umerenkov et al. 2023)、THPLM (Gong et al. 2023) 和 ThermoMPNN (Dieckhaus et al. 2024)
-  
+
   以及十五种基于结构的方法，即 ACDC-NN (Benevenuta et al. 2021)、PremPS (Chen et al. 2020)、DDGun3D (Montanucci et al. 2019)、INPS-3D (Savojardo et al. 2016)、ThermoNet (Li et al. 2020)、MAESTRO (Laimer et al. 2015, 2016)、Dynamut (Rodrigues et al. 2018)、PoPMuSiC (Dehouck et al. 2011)、DUET (Pires et al. 2014a)、SDM (Worth et al. 2011)、mCSM (Pires et al. 2014b)、Dynamut2 (Rodrigues et al. 2021)、I-Mutant3-3D (Capriotti et al. 2005)、Rosetta (Kellogg et al. 2011) 和 FoldX (Schymkowitz et al. 2005)。结果列于表 2 中。
 <img src="https://cloudflare.remsait.com/img/ddgemb202509221824082.png"  alt="404" title=""  />
 <center><div style="color:orange; border-bottom: 1px solid #d9d9d9;
@@ -146,17 +145,17 @@ categories:
   	</div>
 </center>
   对于每种方法，我们报告了以下三种情况下的皮尔逊相关系数（PCC）、均方根误差（RMSE）和平均绝对误差（MAE）：所有变异（包括正向和反向变异）的结果（“Total”列下）；仅正向变异的结果（“Direct”列下）；仅反向变异的结果（“Reverse”列下）。
-  
+
   此外，我们还计算了反向相关性$(PCC_{d-r})$和反称性偏差$<\delta>$。
-  
+
   在 S669 数据集上，DDGemb 在 PCC、RMSE 和 MAE 指标上均取得了最高性能（在“Total”、“Direct”和“Reverse”三类中均表现最佳）。总体而言，DDGemb 是本基准测试中性能最优的工具，其表现显著超过了现有的基于结构和基于序列的方法。
 ### 多点突变的预测
   最后，我们使用 PTmul-NR 数据集测试了 DDGemb 在多点突变预测上的性能。这使得我们能够直接与 DDGun/DDGun3D (Montanucci et al. 2019)、MAESTRO (Laimer et al. 2015) 和 FoldX (Schymkowitz et al. 2005) 等方法进行比较。结果列于表 3 中。
-  
+
   在 PTmul-NR 数据集上，DDGemb 在多点突变预测方面显著优于 DDGun、DDGun3D、FoldX 和 MAESTRO，取得了最高的 0.59 相关系数，以及最低的 RMSE（2.16）和 MAE（1.59）值。这些结果表明，DDGemb 可以高精度地有效评估多点突变对蛋白质稳定性的影响。值得注意的是，我们的模型仅使用单点突变数据进行训练，却能在多点突变上取得优异性能，这表明该方法具备良好的泛化能力，能够推广到多点突变场景。
 ## 讨论
   在本研究中，我们提出了 DDGemb，一种基于蛋白质语言模型和 Transformer 架构的新型方法，用于预测单点和多点突变引起的蛋白质稳定性变化（ΔΔG）。该方法在一个从文献中整理的高质量数据集上进行训练，并使用近年来新发布的单点和多点突变热力学数据基准集进行测试。在所有基准测试中，DDGemb 的性能均优于当前最先进的方法，不仅超越了基于序列的方法，也优于基于结构的方法，在单点突变预测上取得了 0.68 的总体皮尔逊相关系数（PCC）。此外，在多点突变预测上，本方法的 PCC 达到 0.59，显著高于排名第二的最佳方法 FoldX（PCC 为 0.36）。本研究表明，将专为预测突变 ΔΔG 而精细调优的 Transformer 架构，与蛋白质语言模型提供的数值化表示相结合，具有重要意义。
-  
+
   利益冲突：无。
 
 
