@@ -122,6 +122,7 @@ declare module 'vue-router/auto-routes' {
     '/posts/markdown的基础用法': RouteRecordInfo<'/posts/markdown的基础用法', '/posts/markdown的基础用法', Record<never, never>, Record<never, never>>,
     '/posts/missing-semester': RouteRecordInfo<'/posts/missing-semester', '/posts/missing-semester', Record<never, never>, Record<never, never>>,
     '/posts/mutDDG-SSM 文献精读': RouteRecordInfo<'/posts/mutDDG-SSM 文献精读', '/posts/mutDDG-SSM 文献精读', Record<never, never>, Record<never, never>>,
+    '/posts/ProS-GNN 文献精读': RouteRecordInfo<'/posts/ProS-GNN 文献精读', '/posts/ProS-GNN 文献精读', Record<never, never>, Record<never, never>>,
     '/posts/ProSTAGE 文献精读': RouteRecordInfo<'/posts/ProSTAGE 文献精读', '/posts/ProSTAGE 文献精读', Record<never, never>, Record<never, never>>,
     '/posts/SVM': RouteRecordInfo<'/posts/SVM', '/posts/SVM', Record<never, never>, Record<never, never>>,
     '/posts/Transformer文献精读': RouteRecordInfo<'/posts/Transformer文献精读', '/posts/Transformer文献精读', Record<never, never>, Record<never, never>>,
