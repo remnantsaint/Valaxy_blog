@@ -107,6 +107,7 @@ declare module 'vue-router/auto-routes' {
     '/posts/DFS_搜索': RouteRecordInfo<'/posts/DFS_搜索', '/posts/DFS_搜索', Record<never, never>, Record<never, never>>,
     '/posts/DFS_图论': RouteRecordInfo<'/posts/DFS_图论', '/posts/DFS_图论', Record<never, never>, Record<never, never>>,
     '/posts/docker基础教程': RouteRecordInfo<'/posts/docker基础教程', '/posts/docker基础教程', Record<never, never>, Record<never, never>>,
+    '/posts/ELASPIC2 文献精读': RouteRecordInfo<'/posts/ELASPIC2 文献精读', '/posts/ELASPIC2 文献精读', Record<never, never>, Record<never, never>>,
     '/posts/ensemble-method': RouteRecordInfo<'/posts/ensemble-method', '/posts/ensemble-method', Record<never, never>, Record<never, never>>,
     '/posts/git基础教程': RouteRecordInfo<'/posts/git基础教程', '/posts/git基础教程', Record<never, never>, Record<never, never>>,
     '/posts/Github使用指南': RouteRecordInfo<'/posts/Github使用指南', '/posts/Github使用指南', Record<never, never>, Record<never, never>>,
