@@ -45,3 +45,22 @@ color:        #友链颜色（可选，不选随机
 ## 我的小伙伴们
 
 <YunLinks :links="frontmatter.links" :random="frontmatter.random" />
+
+
+---
+title: 
+color: '#87CEEB'
+keywords: 
+description: 
+aside: false	
+nav: false
+links: 
+  - url:                                             
+    avatar:           
+    name:                                                   
+    blog:                                                    
+    desc:                                                        
+    email:                                                      
+    color:                                                                 
+random: true
+---
