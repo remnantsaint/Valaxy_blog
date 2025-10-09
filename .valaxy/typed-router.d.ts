@@ -104,6 +104,7 @@ declare module 'vue-router/auto-routes' {
     '/posts/最大平均通过率': RouteRecordInfo<'/posts/最大平均通过率', '/posts/最大平均通过率', Record<never, never>, Record<never, never>>,
     '/posts/左叶子之和': RouteRecordInfo<'/posts/左叶子之和', '/posts/左叶子之和', Record<never, never>, Record<never, never>>,
     '/posts/DDGemb 文献精读': RouteRecordInfo<'/posts/DDGemb 文献精读', '/posts/DDGemb 文献精读', Record<never, never>, Record<never, never>>,
+    '/posts/DDMut 文献精读': RouteRecordInfo<'/posts/DDMut 文献精读', '/posts/DDMut 文献精读', Record<never, never>, Record<never, never>>,
     '/posts/DFS_搜索': RouteRecordInfo<'/posts/DFS_搜索', '/posts/DFS_搜索', Record<never, never>, Record<never, never>>,
     '/posts/DFS_图论': RouteRecordInfo<'/posts/DFS_图论', '/posts/DFS_图论', Record<never, never>, Record<never, never>>,
     '/posts/docker基础教程': RouteRecordInfo<'/posts/docker基础教程', '/posts/docker基础教程', Record<never, never>, Record<never, never>>,
