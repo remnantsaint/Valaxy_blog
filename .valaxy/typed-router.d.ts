@@ -126,6 +126,7 @@ declare module 'vue-router/auto-routes' {
     '/posts/mutDDG-SSM 文献精读': RouteRecordInfo<'/posts/mutDDG-SSM 文献精读', '/posts/mutDDG-SSM 文献精读', Record<never, never>, Record<never, never>>,
     '/posts/ProS-GNN 文献精读': RouteRecordInfo<'/posts/ProS-GNN 文献精读', '/posts/ProS-GNN 文献精读', Record<never, never>, Record<never, never>>,
     '/posts/ProSTAGE 文献精读': RouteRecordInfo<'/posts/ProSTAGE 文献精读', '/posts/ProSTAGE 文献精读', Record<never, never>, Record<never, never>>,
+    '/posts/PROSTATA 文献精读': RouteRecordInfo<'/posts/PROSTATA 文献精读', '/posts/PROSTATA 文献精读', Record<never, never>, Record<never, never>>,
     '/posts/SVM': RouteRecordInfo<'/posts/SVM', '/posts/SVM', Record<never, never>, Record<never, never>>,
     '/posts/Transformer文献精读': RouteRecordInfo<'/posts/Transformer文献精读', '/posts/Transformer文献精读', Record<never, never>, Record<never, never>>,
     '/posts/valaxy版本升级指南': RouteRecordInfo<'/posts/valaxy版本升级指南', '/posts/valaxy版本升级指南', Record<never, never>, Record<never, never>>,
