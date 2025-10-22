@@ -55,7 +55,7 @@ top:
 (1)用法：`![alt 属性文本](图片地址 "可选标题")`，其中属性文本是替代文字，可选标题可以没有。高级用法和链接一样。  
 (2)markdown无法指定图片的高度和宽度，可以用普通的`<img>`标签：`<img decoding="async" src="http://static.runoob.com/images/runoob-logo.png" width="50%">`  
 (3)示例：
-```
+```css
 <img src="https://cloudflare.remsait.com/img/DDGEmb202509221445950.png"  alt="404" title=""  />
 <center><div style="color:orange; border-bottom: 1px solid #d9d9d9;
     display: inline-block;
@@ -64,6 +64,20 @@ top:
       模型架构
   	</div>
 </center>
+```
+(4)并列图片实例
+```css
+<div style="float: left; width: 45%; margin-right: 5%;">
+  <img src="https://cloudflare.remsait.com/img/ACDC-NN-SEQ202510221422183.png" 
+       style="width: 100%; max-width: 500px; min-width: 300px; height: auto;">
+  <p style="text-align: center; margin-top: 8px; font-size: 14px;">图1</p>
+</div>
+<div style="float: left; width: 45%;">
+  <img src="https://cloudflare.remsait.com/img/ACDC-NN-SEQ202510221423633.png" 
+       style="width: 100%; max-width: 500px; min-width: 300px; height: auto;">
+  <p style="text-align: center; margin-top: 8px; font-size: 14px;">图2</p>
+</div>
+<div style="clear: both;"></div>
 ```
 
 #### 10.表格
