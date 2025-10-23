@@ -79,6 +79,15 @@ top:
 </div>
 <div style="clear: both;"></div>
 ```
+(5)单个图片
+```
+<div>
+  <img src="https://cloudflare.remsait.com/img/ThermoNet202510231110111.png" 
+       style="width: 100%; max-width: 1000px; min-width: 300px; height: auto;">
+  <p style="text-align: center; margin-top: 8px; font-size: 14px;">图1</p>
+</div>
+<div style="clear: both;"></div>
+```
 
 #### 10.表格
 &emsp;markdown制作表格用|来分隔不同的单元格，使用-分隔表头和其他行，例如：
