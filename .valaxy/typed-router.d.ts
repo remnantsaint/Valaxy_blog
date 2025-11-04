@@ -130,6 +130,7 @@ declare module 'vue-router/auto-routes' {
     '/posts/ProS-GNN 文献精读': RouteRecordInfo<'/posts/ProS-GNN 文献精读', '/posts/ProS-GNN 文献精读', Record<never, never>, Record<never, never>>,
     '/posts/ProSTAGE 文献精读': RouteRecordInfo<'/posts/ProSTAGE 文献精读', '/posts/ProSTAGE 文献精读', Record<never, never>, Record<never, never>>,
     '/posts/PROSTATA 文献精读': RouteRecordInfo<'/posts/PROSTATA 文献精读', '/posts/PROSTATA 文献精读', Record<never, never>, Record<never, never>>,
+    '/posts/RaSP 文献精读': RouteRecordInfo<'/posts/RaSP 文献精读', '/posts/RaSP 文献精读', Record<never, never>, Record<never, never>>,
     '/posts/Stability Oracle 文献精读': RouteRecordInfo<'/posts/Stability Oracle 文献精读', '/posts/Stability Oracle 文献精读', Record<never, never>, Record<never, never>>,
     '/posts/SVM': RouteRecordInfo<'/posts/SVM', '/posts/SVM', Record<never, never>, Record<never, never>>,
     '/posts/ThermoMPNN 文献精读': RouteRecordInfo<'/posts/ThermoMPNN 文献精读', '/posts/ThermoMPNN 文献精读', Record<never, never>, Record<never, never>>,
