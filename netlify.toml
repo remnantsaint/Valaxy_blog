@@ -1,6 +1,6 @@
 [build]
 publish = "dist"
-command = "pnpm run build"
+command = "NODE_OPTIONS='--max-old-space-size=4096' pnpm run build"
 
 [build.environment]
 NODE_VERSION = "20"
