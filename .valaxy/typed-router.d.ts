@@ -135,6 +135,7 @@ declare module 'vue-router/auto-routes' {
     '/posts/SVM': RouteRecordInfo<'/posts/SVM', '/posts/SVM', Record<never, never>, Record<never, never>>,
     '/posts/ThermoMPNN 文献精读': RouteRecordInfo<'/posts/ThermoMPNN 文献精读', '/posts/ThermoMPNN 文献精读', Record<never, never>, Record<never, never>>,
     '/posts/ThermoNet 文献精读': RouteRecordInfo<'/posts/ThermoNet 文献精读', '/posts/ThermoNet 文献精读', Record<never, never>, Record<never, never>>,
+    '/posts/THPLM 文献精读': RouteRecordInfo<'/posts/THPLM 文献精读', '/posts/THPLM 文献精读', Record<never, never>, Record<never, never>>,
     '/posts/Transformer文献精读': RouteRecordInfo<'/posts/Transformer文献精读', '/posts/Transformer文献精读', Record<never, never>, Record<never, never>>,
     '/posts/valaxy版本升级指南': RouteRecordInfo<'/posts/valaxy版本升级指南', '/posts/valaxy版本升级指南', Record<never, never>, Record<never, never>>,
     '/posts/valaxy博客光标美化': RouteRecordInfo<'/posts/valaxy博客光标美化', '/posts/valaxy博客光标美化', Record<never, never>, Record<never, never>>,
