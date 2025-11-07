@@ -16,6 +16,8 @@ categories:
   [THPLM: a sequence-based deep learning framework for  protein stability changes prediction upon point variations  using pretrained protein language model](https://pubmed.ncbi.nlm.nih.gov/37874953)
 
   https://github.com/FPPGroup/THPLM
+  
+  
 ## 摘要
   动机：蛋白质热力学稳定性的定量测定是蛋白质设计和药物研发中的关键步骤。可靠地预测由点突变引起的蛋白质稳定性变化，有助于推动相关领域的发展。过去几十年中，研究者提出了数十种基于结构和基于序列的方法，在稳定性变化预测方面表现出良好的性能。尽管取得了显著进展，仍有必要深入探索野生型与突变型蛋白质的表征方式，以从全局序列视角解决如何有效表示蛋白质稳定性变化的问题。随着基于学习方法的蛋白质结构预测技术的发展，蛋白质语言模型（Protein Language Models, PLMs）已展现出对蛋白质结构高精度、高质量的预测能力。由于PLM能够捕捉原子级别的结构信息，因此有助于理解单点突变如何引发功能变化。
 
