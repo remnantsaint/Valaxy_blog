@@ -211,22 +211,24 @@ if __name__ == '__main__':
 </center>
 ```
 
-发现一个bug ，本地文章列表创建多级目录的时候，在网站刷新一下当前文章就会 404 ！！  
+  发现一个bug ，本地文章列表创建多级目录的时候，在网站刷新一下当前文章就会 404 ！！  
 &emsp; 该bug解决办法：升级valaxy的新版本，详见本博客内另外一篇文章[valaxy版本升级指南 - -西柿's Blog- (remsait.com)](https://remsait.com/posts/valaxy版本升级指南)
-
-踩坑：   我把域名转移到cloudfare下面，利用它的加速，但是转移后总报错重定向过多
+  
+  踩坑：   我把域名转移到cloudfare下面，利用它的加速，但是转移后总报错重定向过多
 解决办法：在SSL证书那块选择`完全`  
-
-好难啊，暂时不想改主题了(艰难花费两天时间改完了），以后有时间系统学习一下vue相关的。没有前端基础，自己创个新界面都费劲。
+  
+  好难啊，暂时不想改主题了(艰难花费两天时间改完了），以后有时间系统学习一下vue相关的。没有前端基础，自己创个新界面都费劲。
 原hexo界面仍然部署在github-page上，想用原来的也很简单，因为是两个库，主要是迁移文章太麻烦啦！！  
-
-当git拉取不对的时候，最好直接删掉本地valaxy文件夹，重新在github上拉取，方法如下：(1)先git clone到本地 （2）进入目录后 `pnpm i`  (3) 大功告成      
-
-在`styles/index.scss`文件中修改了主页文章卡片的悬停动态效果，具体问 AI  
-
-文章的`time_warning`标签要配合`updated`标签一起使用  
-
-图床配置详见：[腾讯云cos图床+cloudflare+Picgo](https://remsait.com/posts/%E8%85%BE%E8%AE%AF%E4%BA%91cos%E5%9B%BE%E5%BA%8A+cloudflare+Picgo)  
+  
+  当git拉取不对的时候，最好直接删掉本地valaxy文件夹，重新在github上拉取，方法如下：(1)先git clone到本地 （2）进入目录后 `pnpm i`  (3) 大功告成      
+  
+  在`styles/index.scss`文件中修改了主页文章卡片的悬停动态效果，具体问 AI  
+  
+  文章的`time_warning`标签要配合`updated`标签一起使用  
+  
+  图床配置详见：[腾讯云cos图床+cloudflare+Picgo](https://remsait.com/posts/%E8%85%BE%E8%AE%AF%E4%BA%91cos%E5%9B%BE%E5%BA%8A+cloudflare+Picgo)  
+  
+  从github page 部署换到 netlify 部署，后者只需要从github拉取项目，然后改一下域名和dns就完事
 
 
 
