@@ -1,0 +1,1 @@
+import{m as i,aC as l,aD as t}from"./app-Diq8Z5o7.js";function r(e){const s=i(!1),{top:o}=l(e);return t(e,([{isIntersecting:n}])=>{s.value=n}),{show:()=>{s.value||window.scrollTo(0,o.value)}}}export{r as u};
