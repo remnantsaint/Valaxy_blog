@@ -124,6 +124,7 @@ declare module 'vue-router/auto-routes' {
     '/posts/linux一些命令': RouteRecordInfo<'/posts/linux一些命令', '/posts/linux一些命令', Record<never, never>, Record<never, never>>,
     '/posts/Logistic回归': RouteRecordInfo<'/posts/Logistic回归', '/posts/Logistic回归', Record<never, never>, Record<never, never>>,
     '/posts/LRU缓存': RouteRecordInfo<'/posts/LRU缓存', '/posts/LRU缓存', Record<never, never>, Record<never, never>>,
+    '/posts/mamba 浅学': RouteRecordInfo<'/posts/mamba 浅学', '/posts/mamba 浅学', Record<never, never>, Record<never, never>>,
     '/posts/markdown的基础用法': RouteRecordInfo<'/posts/markdown的基础用法', '/posts/markdown的基础用法', Record<never, never>, Record<never, never>>,
     '/posts/missing-semester': RouteRecordInfo<'/posts/missing-semester', '/posts/missing-semester', Record<never, never>, Record<never, never>>,
     '/posts/mutDDG-SSM 文献精读': RouteRecordInfo<'/posts/mutDDG-SSM 文献精读', '/posts/mutDDG-SSM 文献精读', Record<never, never>, Record<never, never>>,

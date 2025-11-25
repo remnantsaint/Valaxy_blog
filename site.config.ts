@@ -47,6 +47,12 @@ export default defineSiteConfig({
       icon: 'i-ri-train-line',
       color: 'black',
     },
+    {
+      name: '异次元之旅',
+      link: 'https://travel.moe/go.html',
+      icon: 'i-ri-planet-line',
+      color: 'blue',
+    },
     /*
     {
       name: '邮箱',
