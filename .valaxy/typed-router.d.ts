@@ -118,6 +118,7 @@ declare module 'vue-router/auto-routes' {
     '/posts/GNN': RouteRecordInfo<'/posts/GNN', '/posts/GNN', Record<never, never>, Record<never, never>>,
     '/posts/Hexo博客迁移至Valaxy': RouteRecordInfo<'/posts/Hexo博客迁移至Valaxy', '/posts/Hexo博客迁移至Valaxy', Record<never, never>, Record<never, never>>,
     '/posts/hexo初建站': RouteRecordInfo<'/posts/hexo初建站', '/posts/hexo初建站', Record<never, never>, Record<never, never>>,
+    '/posts/INPS 文献精读': RouteRecordInfo<'/posts/INPS 文献精读', '/posts/INPS 文献精读', Record<never, never>, Record<never, never>>,
     '/posts/K-Means 聚类算法': RouteRecordInfo<'/posts/K-Means 聚类算法', '/posts/K-Means 聚类算法', Record<never, never>, Record<never, never>>,
     '/posts/KNN近邻': RouteRecordInfo<'/posts/KNN近邻', '/posts/KNN近邻', Record<never, never>, Record<never, never>>,
     '/posts/leetcode个人代码': RouteRecordInfo<'/posts/leetcode个人代码', '/posts/leetcode个人代码', Record<never, never>, Record<never, never>>,
