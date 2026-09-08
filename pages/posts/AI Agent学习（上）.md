@@ -1659,17 +1659,20 @@ print(f'回答:{response}')
   升级方案：三步构建高质量检索管道，我们将原始的单步检索拆解为以下三个阶段：
 
   1. 粗召回  
+
     扩大初始召回范围，获取更多候选文档
 ```python
 base_retriever = db.as_retriever(search_kwargs={"k": 50})  # 海选前五十
 ```
   2. 精排序  
+
     引入交叉编码器（Cross-Encoder）对候选文档进行查询-文档对级别的相关性重打分：
 ```python
 encoder = HuggingFaceCrossEncoder(model_name="BAAI/bge-reranker-base")
 reranker = CrossEncoderReranker(model=encoder, top_n=5)  # 精选 Top-50
 ```
   3. 管道封装（Pipeline Integration）  
+
     使用 ContextualCompressionRetriever 将粗召回与精排序无缝串联
 ```python
 compression_retriever = ContextualCompressionRetriever(
@@ -1894,6 +1897,81 @@ if __name__ == '__main__':
 
   代码实现如下，只需在原有 Agent 框架中注入 RAG 工具即可——build_rag_chain 函数保持不变，其余结构沿用前文记忆型 Agent：
 ```python
+import os
+from config import OPENAI_API_KEY
+from embeddings import get_embeddings
+from langchain_chroma import Chroma
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate,MessagesPlaceholder
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+from langchain_classic.retrievers import ContextualCompressionRetriever
+from langchain_community.cross_encoders import HuggingFaceCrossEncoder
+from langchain_classic.retrievers.document_compressors import CrossEncoderReranker
+from langchain_core.tools import tool
+from langchain_classic.agents import AgentExecutor
+from langchain_classic.agents import create_tool_calling_agent
+from langchain_community.chat_message_histories import ChatMessageHistory
+from langchain_core.runnables import RunnableWithMessageHistory
+
+
+# 1. 构建一个可复用的 RAG链条
+def build_rag_chain(llm_instance):
+    print('---正在构建RAG链条---')
+
+    persist_directory = './chroma_db_war_and_peace_bge_small_en_v1.5'
+    embedding_model_name = 'BAAI/bge-small-en-v1.5'
+    encoder_model_name = "BAAI/bge-reranker-base"
+
+    if not os.path.exists(persist_directory):
+        raise FileNotFoundError(f'索引目录{persist_directory}未找到，请先运行 build_index.py')
+
+    # 链接向量数据库
+    print(f'正在加载/下载 Embedding模型：{embedding_model_name}')
+    embeddings_model = get_embeddings(model_name=embedding_model_name,device='cpu')
+    db = Chroma(
+        persist_directory=persist_directory,
+        embedding_function=embeddings_model
+    )
+    # R
+    print(f'正在加载 Reranker模型:{encoder_model_name}...')
+    base_retriever = db.as_retriever(search_kwargs={'k':50})
+    encoder = HuggingFaceCrossEncoder(model_name=encoder_model_name)
+    reranker = CrossEncoderReranker(model=encoder,top_n=6)
+    compression_retriever = ContextualCompressionRetriever(
+        base_retriever=base_retriever,
+        base_compressor=reranker
+    )
+    retriever = compression_retriever
+    # A
+    sys_prompt = """
+    你是一个博学的历史学家和文学评论家。
+    请根据以下上下文回答问题。如果上下文**暗示**了答案，即使未明说，也可推理回答。
+    如果完全无关，请回答“对不起，根据所提供的上下文我不知道”。
+
+    [上下文]: {context}
+    [问题]: {question}
+    """
+    prompt = ChatPromptTemplate.from_messages([
+        ('system',sys_prompt),
+        ('human','{question}')
+    ])
+
+    def format_docs(docs):
+        return '\n'.join(doc.page_content for doc in docs)
+
+    # R-A-G
+    rag_chain = (
+        {'context':retriever | format_docs,'question':RunnablePassthrough()}
+        | prompt
+        | llm_instance
+        | StrOutputParser()
+    )
+    print('---RAG链条构建完毕!---\n')
+    return rag_chain
+
+
+# 2. 将 RAG链条 组装进Agent里
 def create_agent_with_memory():
     # LLm
     llm = ChatOpenAI(
@@ -1908,37 +1986,37 @@ def create_agent_with_memory():
         ('human','{input}'),
         MessagesPlaceholder(variable_name="agent_scratchpad") # 05篇所学:ReAct 思考链，使其能够调用工具
     ])
- 
+
     # Tool
     rag_chain_instance = build_rag_chain(llm_instance=llm)
- 
- 
+
+
     @tool
     def search_war_and_peace(query):
         """查询《战争与和平》小说中的内容，包括人物、情节、历史事件等"""
         print(f'\n正在检索《战争与和平》:{query}')
         return rag_chain_instance.invoke(query)
- 
+
     @tool
     def get_weather(location):
         """模拟获得天气信息"""
         return f"{location}当前天气：23℃，晴，风力2级"
- 
+
     tools = [get_weather,search_war_and_peace]
-# 先创建“会调用工具的 Agent”，再给它加“对话记忆”。
+
     # 创建Agent
     agent = create_tool_calling_agent(llm=llm,tools=tools,prompt=prompt)
     agent_executor = AgentExecutor(agent=agent,tools=tools,verbose=False)
- 
+
     # 封装Memory
     store = {}
- 
+
     def get_session_history(session_id:int):
         if session_id not in store:
             store[session_id] = ChatMessageHistory()
         return store[session_id]
- 
- 
+
+
     # 添加记忆功能
     agent_with_memory = RunnableWithMessageHistory(
         runnable=agent_executor,
@@ -1947,10 +2025,10 @@ def create_agent_with_memory():
         history_messages_key="history"
     )
     return agent_with_memory
- 
- 
+
+
 # 测试
- 
+
 if __name__ == '__main__':
     session_id = 'user123'
     agent = create_agent_with_memory()
@@ -1965,74 +2043,6 @@ if __name__ == '__main__':
         )
         print(f"AI:{response['output']}")
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

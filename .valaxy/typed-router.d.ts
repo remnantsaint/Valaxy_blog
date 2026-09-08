@@ -106,6 +106,7 @@ declare module 'vue-router/auto-routes' {
     '/posts/ACDC-NN 文献精读': RouteRecordInfo<'/posts/ACDC-NN 文献精读', '/posts/ACDC-NN 文献精读', Record<never, never>, Record<never, never>>,
     '/posts/ACDC-NN-Seq 文献精读': RouteRecordInfo<'/posts/ACDC-NN-Seq 文献精读', '/posts/ACDC-NN-Seq 文献精读', Record<never, never>, Record<never, never>>,
     '/posts/AI Agent学习（上）': RouteRecordInfo<'/posts/AI Agent学习（上）', '/posts/AI Agent学习（上）', Record<never, never>, Record<never, never>>,
+    '/posts/AI Agent学习（下）': RouteRecordInfo<'/posts/AI Agent学习（下）', '/posts/AI Agent学习（下）', Record<never, never>, Record<never, never>>,
     '/posts/DDGemb 文献精读': RouteRecordInfo<'/posts/DDGemb 文献精读', '/posts/DDGemb 文献精读', Record<never, never>, Record<never, never>>,
     '/posts/DDMut 文献精读': RouteRecordInfo<'/posts/DDMut 文献精读', '/posts/DDMut 文献精读', Record<never, never>, Record<never, never>>,
     '/posts/DeepDDG 文献精读': RouteRecordInfo<'/posts/DeepDDG 文献精读', '/posts/DeepDDG 文献精读', Record<never, never>, Record<never, never>>,
