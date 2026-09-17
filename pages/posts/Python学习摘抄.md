@@ -9,7 +9,7 @@ top:
 tags: 
  - python
 categories: 
- - 人工智能
+ - 学习记录
 draft: 
 # author: @Remsait
 ---

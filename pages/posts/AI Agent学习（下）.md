@@ -9,7 +9,7 @@ top:
 tags: 
  - AI
 categories: 
- - 人工智能
+ - 学习记录
 draft: 
 # author: @Remsait
 ---
@@ -701,7 +701,7 @@ def supervisor(state:AgentState):
 
 #### 构建协作图：核心架构逻辑
   这是本章最复杂的部分，我们需要通过 StateGraph 将节点织成一张网
-  
+
   代码实现：
 ```python
 # 路由函数定义
@@ -757,9 +757,9 @@ workflow.add_conditional_edges( # 工具执行完，根据next_speaker路由回�
 app = workflow.compile()
 ```
   理解图构建中的三个关键点  
-  
+
   第一点：条件边的两种写法（动态 vs 静态）  
-  
+
   * 直接返回（动态路由）：如 route_supervisor。函数直接返回节点名称字符串，适用于目标节点不确定的情况（Supervisor 可能返回任何专家的名字）。
 ```python
 # 读取总控做出的决定，然后告诉工具流下一步去哪
@@ -788,9 +788,9 @@ for member in ["rag_expert","web_research","code_writer"]: # 为每个专家添�
     )
 ```
   第二点：For 循环的本质（构建时 vs 运行时）代码中的 for member in [...] 并不是让程序运行时轮流跑一遍专家。这是构建阶段（Build Time）的代码。它的作用是”批量注册“：我们告诉图，这三个专家节点，它们”出门“后规则是一样的（要么修工具，要么回总控）。这避免了重复写三遍相同的 add_conditional_deges 代码。
-  
+
   第三点：add_conditional_edges 的回环特性。这一代码相当于给节点安装了一个永久生效的”单向任意门“。  
-  
+
   * 回环：一旦定义了 Expert->check->Tools，以后无论流程回到几次 Expert 节点，离开时都会触发这个检查。
   * 单向性：虽然我们在逻辑上实现了 Expert->check->Tools 的闭环，但这个闭环式由两条单向边拼凑的：
     1. Expert->Tools（通过 should_continue 定义）
@@ -798,7 +798,7 @@ for member in ["rag_expert","web_research","code_writer"]: # 为每个专家添�
 
 #### 测试运行
   最后，通过打印日志来验证多智能体的协作流
-  
+
   代码实现：
 ```python
 # 测试运行
@@ -827,7 +827,7 @@ if __name__ == '__main__':
                 print(f"【Supervisor】指定下一位发言人：{speaker}")
 ```
   系统的运行脉络：Supervisor 识别意图 -> 指派 RAG 专家 -> RAG 专家发现需要查库 -> 调用 Tools -> Tools 返回结果 -> RAG 专家生成最终答复 -> Supervisor 确认任务完成（FINISH）。
-  
+
   工作流大致如下图所示：
 ```shell
            (开始)
@@ -844,7 +844,7 @@ if __name__ == '__main__':
       (3. 汇报结果)
 ```
   总结：三种能力如何组合？
-  
+
 | 能力 | 解决的问题 | 典型场景 |
 |---|---|---|
 | Human-in-the-Loop | 不可逆操作的安全风险 | 发邮件、删除数据、审批流程 |
@@ -853,15 +853,15 @@ if __name__ == '__main__':
 
 ### 综合实战
   在前三章中，我们分别掌握了 安全锁、黑盒工具、团队管理。现在，我们不再纸上谈兵，而是将这三者融为一体，构建一个生产级架构的 IT 运维智能体。
-  
+
   业务场景设定：我们模拟一个服务器故障排查场景
-  
+
   总控（Supervisor）：负责接收报警，调度专家；
-  
+
   日志专家（Log Exper）：负责分析服务器日志。它手中的工具 analyze_logs 是一个子图，包含 SSH 连接重试、日志提取等复杂逻辑（模拟网络不稳定的真实环境）。
-  
+
   运维专家（Ops Expert）：负责执行修复。它手中的工具 restart_services 是敏感操作，必须经过人工审批（Human-in-the-Loop）。
-  
+
   代码实现：
 ```python
 import os
@@ -1091,63 +1091,67 @@ if __name__ == '__main__':
                     break
 ```
   运行效果：
-  
+
   1. 总控调度：Supervisor 收到报警，首先指派 log_expert。
   2. 子图自动重试：  
+
     * log_expert 调用 analyze_server_logs；
     * 系统识别这是安全工具，自动批准；
     * 控制台打印出子图内部逻辑：第一次连接超时 -> 自动重试 -> 连接成功 -> 获取到 OutOfMemory 错误
   3. 二次调度：
+
     * log_expert 汇报：”发现了 OOM 错误“
     * Supervisor 决策：”这是内存溢出，需要重启，指派 ops_expert。“
   4. 人工拦截：
+
     * ops_expert 试图调用 restart_services
     * 系统识别这是高危工具，强制暂停。
     * 控制台提示：警告：这是一个高危操作！
   5. 最终修复：
+
     * 输入 yes
     * 服务重启成功，Supervisor 输出 FINISH。
 
 ## mcp_basics
   在 RAG 篇中，为了让 Agent 能查询天气，我们手写了一个 get_weather 函数，并用 @tool 装饰器将其注册为工具。但现实需求远不止如此：查询高德地图的驾车路线、通过 Github 自动创建 Issue 通过飞书机器人发送通知。
-  
+
   难道我们要为每一个服务去阅读 API 文档、处理认证、封装错误、维护版本，再手写几百个 @tool 函数吗？这正是“工具孤岛”问题——每个 Agent 都在重复造轮子，无法共享、难以复用、维护成本极高。
-  
+
   Model Context Protocol （MCP）的诞生，就是为了解决这个问题。
-  
+
   MCP 把工具剥离开来，放到独立的 Sever 里：
-  
+
   * 它可以是一个 USB 设备（支持 Stdio 插拔）
   * 也可以是个 Wifi 热点（支持 HTTP 连接）
-  
+
   有了 MCP 的 Agent ，才可以自由调用成百上千个工具，让 Agent 的能力飞速扩张。
-  
+
   对于 MCP 的基础篇与进阶篇，我们将诸葛学习 MCP的服务端与客户端搭建。
-  
+
 ### 为什么先学服务端
   按常理，我们或许应该先学会“如何接入别人的 MCP 服务”（客户端），再学习“如何发布自己的服务”（服务端）。但在 MCP 的学习路径中，这个顺序恰恰应该反过来，原因很简单：服务端适合“极速上手”，而客户端适合“深度进阶”
-  
+
   服务端：极低门槛，所见即所得
-  
+
   得益于 FastMCP 这样高质量框架的存在，服务端的开发已经变得及其简单。你不需要处理复杂的协议握手，只需写一个带类型提示的普通 Python 函数，加个装饰器，它就立刻变成了一个标准工具。配合 CherryStudio 这样的可视化客户端，你能立刻看到自己的代码跑起来，获得极强的正反馈。
-  
+
   客户端：不仅是调用，更是架构
-  
+
   虽然社区已经出现了如 langchain-mcp-adapters 这样的封装库，能让你一键连接，但作为 Agent 全栈工程师，如果只学会调用一个封装好的 load_tools() 函数，就永远也无法理解 MCP 的真正威力。
-  
+
   * 它是如何跨越进程（Stdio）与 Node.js 服务对话的？
   * 它是如何通过 HTTP (SSE) 实现远程流式传输的？
   * 当连接断开或报错时，如何优雅地处理资源释放？
 
   这些底层通信机制和生命周期管理，被封装库完美地“隐藏”了。正因如此，官方和主流工具（如 Cursor、Trae）都鼓励你先成为“工具提供者”。
-  
+
   因此应该先攻服务端：利用 FastMCP 的便利性，5分钟构建出可用的工具，建立信心，理解 MCP 的“双模”（Stdio/HTTP）形态。
-  
+
   后磨客户端：不满足于"调包“，我们将亲手拆解通信黑盒，手写一个生产级的双模客户端。只有造过一次轮子，你才有资格说自己”精通“了 MCP 架构。（当然，在彻底理解原理后，也会介绍官方库作为生产环境的替代方案）。
-  
+
 ### 极速上手：开发第一个基于 FastMCP 的 Stdio Sever 
   我们先从最简单的开始：本地管道模式（Stdio），这是 Cursor Trae 等本地应用连接工具的标准方式。
-  
+
   在没有框架之前，我们写 MCP Server 需要处理各种复杂的协议格式。但借助 FastMCP，我们只需学会写 Python 函数即可。：
 ```python
 # stdio_server.py
@@ -1175,13 +1179,16 @@ if __name__ == '__main__':
     mcp.run()
 ```
   代码解析：
-  
+
   1. 自动 Schema 生成：
+
     * 看代码中的 city:str。FastMCP 会自动读取这些类型注释（Type Hints）。生成 JSON Schema 告诉 LLM：“这个工具需要一个字符串类型的 city 参数”。
     * 写 MCP 工具，必须写 Tpye Hints（类型注释），不然 LLM 不知道如何调用
   2. Docstring 说明书：
+
     * 函数下方的注释（“”“查询指定...”“”）会被自动提取为文档描述。LLM 靠这个来决定什么情况下调用这个工具。
   3. Stdio 管道连接：
+
     * mcp.run() 默认开启 Stdio 模式。此时 FastMCP 会接管标准输入/输出，将 MCP 消息通过 JSON 流处理。
     * 尽量不要再 Server 或工具函数中随意使用 print() 输出消息，因为 Stdout 是 MCP 协议通道，随意输出会破坏消息格式，导致客户端解析失败。
 
@@ -1191,9 +1198,9 @@ if __name__ == '__main__':
   打开 [Cherry Studio](https://www.cherry-ai.com/)，下载该文件并安装好。
 #### 配置 MCP
   下载好后，点击右上角设置，然后点击左栏 MCP，再点击添加-快速创建 MCP 服务器。
-  
+
   在这里，我们把如下信息填充完整：
-  
+
   * 类型（Type）：stdio（通信方式）
   * 名称（Name）：Weather-Local（MCP 工具名）
   * 命令（Command）：python.exe 的绝对路径（启动 py 脚本的解释器）
@@ -1202,13 +1209,13 @@ if __name__ == '__main__':
   配置完成后点击保存，当看到有工具与小版本号时，意味着已经连接成功。
 ### 理解 MCP 的 Transport 通信机制
   上一节中，我们成功使用 Stdio 模式启动了一个本地 MCP Server。你可能会疑惑：“既然 Stdio 是本地通信，为什么我用 npx @amap/ ... 时，感觉像是‘远程调用了高德地图’？"
-  
+
   其实，这种”远程感“是一种部署层面的错觉，通信本身仍是纯本地的，下面我们就来彻底厘清 Stdio 与 Streamable HTTP 的本质区别。
 #### Stdio：真正的本地进程间通信（IPC）
   Stdio（Standard Input/Output）的本质是 父子进程之间的匿名管道通信。它不经过网络协议栈，完全在操作系统内存中完成数据交换。
-  
+
   场景一：纯本地开发（前文所用的方法）
-  
+
   * 运行 python weather_server.py
   * 客户端（如 CherryStudio）通过 subprocess 启动该脚本
   * 双方通过 stdin/stdout 交换 JSON-RPC 消息
@@ -1216,13 +1223,13 @@ if __name__ == '__main__':
   * 仅限同一台机器
 
   场景二：“伪远程”——通过 npx/uvx 临时执行
-  
+
   当你执行`npx @amap/amap-maps-mcp-server YOUR_KEY`，实际上发生了三步：1. 联网下载（一次性），npx 从 npm 仓库拉取包并缓存到本地；2. 本地启动：在你的机器上立即运行这个 Node.js 脚本，生成一个子进程；3. Stdio 通信：客户端通过 stdin/stdout 与这个本地子进程对话。
-  
+
   无论代码来自哪里，只要用 Stdio 启动，服务端进程就一定运行在你的本地机器上。因此，这仍然是本地 IPC，只是“工具来源”是远程的，通信从未离开本机。
 #### Stdio 的局限：为何不能用于生产？
   尽管 Stdio 简单高效，但它天生不适合生产环境：
-  
+
 | 问题 | 说明 |
 | --- | --- |
 | ❌ 无法跨机器 | 服务端必须与客户端同机运行，无法部署到云服务器供团队共享 |
@@ -1233,11 +1240,11 @@ if __name__ == '__main__':
   Stdio 的定位很明确：快速验证、本地开发、桌面应用。它是“造工具”的最佳起点，但不是“用工具”的终极形态。
 #### 升级到生产：为什么必须用 Streamable HTTP？
   当我们要将 MCP 工具部署到云端、供多人或多个 Agent 共享时，必须切换到 Streamable HTTP。
-  
+
   注意：这里的“Streamable HTTP”不是老的 HTTP/1.1，而是一种支持真正双向实时通信的现代协议（基于 HTTP/2 或 HTTP/3），用起来跟 WebSocket 差不多，但部署更简单。
-  
+
 为什么不用常规 HTTP？
-  
+
 | 特性 | 常规 HTTP/1.1 | Streamable HTTP（MCP 推荐） |
 | --- | --- | --- |
 | 连接模型 | 短连接（请求—响应后关闭） | 持久长连接，作为通信隧道 |
@@ -1247,7 +1254,7 @@ if __name__ == '__main__':
 | 适用场景 | 静态资源、简单 API | 实时协作、Agent 控制、流式推理 |
 
   Streamable HTTP 的三大核心优势
-  
+
   1. 持续的状态追踪：Agent 的推理常是多步的（Plan -> Act -> Observe -> Reflect）。Streamable HTTP 通过长连接维持上下文，避免反复传输冗余历史。
   2. 原生全双工 JSON-RPC：服务端可在执行中主动推送日志、中间结果、权限请求（如“请授权访问你的日历”），无需等待客户端轮询。
   3. 流式反馈与控制：不仅返回最终结果，还能实时输出思考链（Chain-of-Thought）、函数调用轨迹、进度条等，极大提升用户体验与可调试性。
@@ -1263,11 +1270,11 @@ if __name__ == '__main__':
 | 典型启动方式 | `python server.py` 或 `npx pkg` | `uvicorn server:app --host 0.0.0.0 --port 8000` |
 
   Stdio 是“插 USB”，即插即用，但只能在自己电脑上用；Streamable HTTP 是“连WIFI”，稍复杂，但能让全世界的 Agent 都用上你的工具。
-  
+
   前文已经讲了 Stdio 的生产实现，下一小节继续针对 Streamable HTTP 的实际实现。
 ### 架构升级——一键开启 Streamable HTTP 远程模式
   既然要支持远程调用，代码会不会变得复杂？
-  
+
   完全不会！FastMCP 已将底层细节全部封装，只需要改动两行配置。
 ```python
 # streamable_http_server.py
@@ -1286,11 +1293,11 @@ if __name__ == '__main__':
     mcp.run('streamable-http')
 ```
   在 MCP 初始化处，我们为其填上 host 与 port 的主机与端口，再在末尾 run 内指定 streamable-http 即可。
-  
+
   在本地运行后，到 CherryStudio 里验证（URL 本地要填 http://127.0.0.1:8001/mcp） ，这里要填 /mcp 的后缀。MCP 连接成功后再去对话。
-  
+
   得益于 Streamable HTTP 的流式特性，工具调用过程支持实时日志输出与中间状态反馈，体验比 Stdio 模式更丰富（尤其在复杂工具场景下）。
-  
+
 
 
 
