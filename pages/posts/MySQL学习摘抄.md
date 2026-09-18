@@ -1,4 +1,3 @@
----
 layout: post
 title: MySQL学习摘抄
 date: 2026-09-13 12:40:47
@@ -7,12 +6,13 @@ time_warning: true
 cover: 
 top: 
 tags: 
- - MySQL
+ - python
 categories: 
  - 学习记录
 draft: 
-# author: @Remsait
+
 ---
+
   同样是[廖雪峰的官方网站](https://liaoxuefeng.com/books/sql/rdbms/install-mysql/index.html) ，重新大体学一下数据库知识
 
   登录用 `mysql -u root -p`。
