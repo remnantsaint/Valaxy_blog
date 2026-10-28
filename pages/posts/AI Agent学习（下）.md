@@ -2,7 +2,7 @@
 layout: post
 title: AI Agent学习（下）
 date: 2026-09-04 16:54:03
-updated: 2026-09-05
+updated: 2026-10-28
 time_warning: true 
 cover: 
 top: 
@@ -1126,7 +1126,7 @@ if __name__ == '__main__':
 
   有了 MCP 的 Agent ，才可以自由调用成百上千个工具，让 Agent 的能力飞速扩张。
 
-  对于 MCP 的基础篇与进阶篇，我们将诸葛学习 MCP的服务端与客户端搭建。
+  对于 MCP 的基础篇与进阶篇，我们将逐步学习 MCP 的服务端与客户端搭建。
 
 ### 为什么先学服务端
   按常理，我们或许应该先学会“如何接入别人的 MCP 服务”（客户端），再学习“如何发布自己的服务”（服务端）。但在 MCP 的学习路径中，这个顺序恰恰应该反过来，原因很简单：服务端适合“极速上手”，而客户端适合“深度进阶”
@@ -1143,11 +1143,11 @@ if __name__ == '__main__':
   * 它是如何通过 HTTP (SSE) 实现远程流式传输的？
   * 当连接断开或报错时，如何优雅地处理资源释放？
 
-  这些底层通信机制和生命周期管理，被封装库完美地“隐藏”了。正因如此，官方和主流工具（如 Cursor、Trae）都鼓励你先成为“工具提供者”。
+  这些底层通信机制和生命周期管理，被封装库隐藏了。先搭建一个能自己控制的服务端，再观察客户端如何发现和调用工具，会更容易理解整条通信链路。
 
   因此应该先攻服务端：利用 FastMCP 的便利性，5分钟构建出可用的工具，建立信心，理解 MCP 的“双模”（Stdio/HTTP）形态。
 
-  后磨客户端：不满足于"调包“，我们将亲手拆解通信黑盒，手写一个生产级的双模客户端。只有造过一次轮子，你才有资格说自己”精通“了 MCP 架构。（当然，在彻底理解原理后，也会介绍官方库作为生产环境的替代方案）。
+  后磨客户端：我们将基于官方 SDK 拆解双模连接、工具发现与调用过程，再通过适配层接入 Agent。先理解通信与生命周期，再复用框架，可以减少后续排错时的盲区。
 
 ### 极速上手：开发第一个基于 FastMCP 的 Stdio Sever 
   我们先从最简单的开始：本地管道模式（Stdio），这是 Cursor Trae 等本地应用连接工具的标准方式。
@@ -1216,62 +1216,53 @@ if __name__ == '__main__':
 
   场景一：纯本地开发（前文所用的方法）
 
-  * 运行 python weather_server.py
+  * 在客户端中配置 Python 命令与 weather_server.py 脚本路径
   * 客户端（如 CherryStudio）通过 subprocess 启动该脚本
   * 双方通过 stdin/stdout 交换 JSON-RPC 消息
-  * 零网络开销，延迟极低（~0.01ms）
+  * MCP 这一段不经过网络，通信开销较小；实际耗时还取决于工具本身
   * 仅限同一台机器
 
   场景二：“伪远程”——通过 npx/uvx 临时执行
 
   当你执行`npx @amap/amap-maps-mcp-server YOUR_KEY`，实际上发生了三步：1. 联网下载（一次性），npx 从 npm 仓库拉取包并缓存到本地；2. 本地启动：在你的机器上立即运行这个 Node.js 脚本，生成一个子进程；3. Stdio 通信：客户端通过 stdin/stdout 与这个本地子进程对话。
 
-  无论代码来自哪里，只要用 Stdio 启动，服务端进程就一定运行在你的本地机器上。因此，这仍然是本地 IPC，只是“工具来源”是远程的，通信从未离开本机。
-#### Stdio 的局限：为何不能用于生产？
-  尽管 Stdio 简单高效，但它天生不适合生产环境：
+  在这种常规配置中，无论代码来自哪里，Stdio 子进程都运行在 MCP 客户端所在的机器上。客户端部署在服务器时，这个“本地”就是服务器。MCP 这一段仍是本机 IPC，但工具内部可以继续请求高德等远程 API。
+#### Stdio 的边界：同机调用与远程共享
+  Stdio 适合客户端管理同一台机器上的工具进程，包括本地开发、桌面应用，以及服务器上的同机工具调用。它也可以用于生产，只是不能直接提供跨机器访问的网络接口。
 
 | 问题 | 说明 |
 | --- | --- |
-| ❌ 无法跨机器 | 服务端必须与客户端同机运行，无法部署到云服务器供团队共享 |
-| ❌ 无持久化 | 每次调用都需重新启动进程，冷启动开销大 |
-| ❌ 无并发支持 | 一个 Stdio 连接对应一个进程，难以支撑多用户或多 Agent 并发 |
-| ❌ 可靠性差 | 进程崩溃、环境变量错误、权限问题都会导致连接瞬间断裂 |
+| 通信范围 | 常规 Stdio 配置要求客户端与工具进程在同一台机器上 |
+| 生命周期 | 子进程通常随连接启动与关闭，同一连接可以调用多次工具 |
+| 并发与共享 | 一个连接可以承载多次请求，但多客户端共享与扩容需要另行设计 |
+| 可靠性 | 需要正确管理进程、环境变量、权限与异常退出 |
 
-  Stdio 的定位很明确：快速验证、本地开发、桌面应用。它是“造工具”的最佳起点，但不是“用工具”的终极形态。
-#### 升级到生产：为什么必须用 Streamable HTTP？
-  当我们要将 MCP 工具部署到云端、供多人或多个 Agent 共享时，必须切换到 Streamable HTTP。
+  因此，选择传输方式的依据是部署边界。要让多台机器上的 Agent 共享同一个工具服务，通常选择 Streamable HTTP。
 
-  注意：这里的“Streamable HTTP”不是老的 HTTP/1.1，而是一种支持真正双向实时通信的现代协议（基于 HTTP/2 或 HTTP/3），用起来跟 WebSocket 差不多，但部署更简单。
+#### 远程部署：Streamable HTTP 到底是什么？
+  Streamable HTTP 是 MCP 基于 HTTP 定义的传输方式，不是独立于 HTTP 的新网络协议，也不强制依赖 HTTP/2 或 HTTP/3。
 
-为什么不用常规 HTTP？
+  客户端向 MCP 地址发送 HTTP POST 请求，服务端可以直接返回 JSON，也可以使用 SSE 流返回消息。是否出现长时间保持的流，取决于具体请求与服务实现；它不等同于 WebSocket 的全双工连接。
 
-| 特性 | 常规 HTTP/1.1 | Streamable HTTP（MCP 推荐） |
-| --- | --- | --- |
-| 连接模型 | 短连接（请求—响应后关闭） | 持久长连接，作为通信隧道 |
-| 通信方向 | 半双工（客户端问 → 服务端答） | 全双工，双方可随时主动发消息 |
-| 状态管理 | 无状态（每次请求独立） | 强有状态，可追踪任务上下文 |
-| 效率 | 高并发但高开销（重复建连、头部冗余） | 多路复用，单连接承载多个 RPC 流 |
-| 适用场景 | 静态资源、简单 API | 实时协作、Agent 控制、流式推理 |
+  同样，HTTP 支持连接复用，不能简单理解成“普通 HTTP 每次都断开，而 Streamable HTTP 永远保持连接”。业务会话与 Agent 历史也不会因为使用这个传输方式就自动保存。
 
-  Streamable HTTP 的三大核心优势
-
-  1. 持续的状态追踪：Agent 的推理常是多步的（Plan -> Act -> Observe -> Reflect）。Streamable HTTP 通过长连接维持上下文，避免反复传输冗余历史。
-  2. 原生全双工 JSON-RPC：服务端可在执行中主动推送日志、中间结果、权限请求（如“请授权访问你的日历”），无需等待客户端轮询。
-  3. 流式反馈与控制：不仅返回最终结果，还能实时输出思考链（Chain-of-Thought）、函数调用轨迹、进度条等，极大提升用户体验与可调试性。
+  协议还有版本差异：2025 年版本包含可选的会话与独立 GET 事件流；2026-07-28 版本调整了这些机制。实际开发应由兼容的 SDK 处理协商，不能把某一版的连接行为当作所有版本的固定特性。参考：[MCP Streamable HTTP 规范](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/docs/specification/2026-07-28/basic/transports/streamable-http.mdx)。
 
 #### 两种 Transport 对比
+
 | 维度 | Stdio | Streamable HTTP |
 | --- | --- | --- |
-| 通信机制 | 父子进程 + 匿名管道 | 全双工 JSON-RPC over HTTP/2 |
-| 延迟 | ~0.01 ms | ~1–10 ms |
-| 安全性 | 进程隔离，无网络暴露 | 需配合 TLS、认证 |
-| 部署场景 | 本地开发、桌面应用 | 云服务、团队共享、生产环境 |
-| 是否占用端口 | ❌ 否 | ✅ 是 |
-| 典型启动方式 | `python server.py` 或 `npx pkg` | `uvicorn server:app --host 0.0.0.0 --port 8000` |
+| 通信机制 | 进程间的标准输入输出管道 | HTTP 请求，返回 JSON 或 SSE 流 |
+| 部署位置 | 通常与客户端同机 | 可以同机，也可以跨机器 |
+| 服务管理 | 通常由客户端启动子进程 | 通常独立部署，由进程管理器维护可用性 |
+| 安全边界 | 操作系统用户、进程与文件权限 | 网络认证、授权与 TLS 等 |
+| 业务状态 | 需要应用自行管理 | 同样需要应用自行管理 |
+| 日志与进度 | 协议支持时可以发送 | 协议支持时同样可以发送 |
 
-  Stdio 是“插 USB”，即插即用，但只能在自己电脑上用；Streamable HTTP 是“连WIFI”，稍复杂，但能让全世界的 Agent 都用上你的工具。
+  Stdio 像“插 USB”，Streamable HTTP 像“通过网络访问设备”。区别在连接范围与部署方式，而不是一个只能做 Demo，另一个才允许用于生产。
 
-  前文已经讲了 Stdio 的生产实现，下一小节继续针对 Streamable HTTP 的实际实现。
+  前文已经讲了 Stdio 的实现，下一小节继续开启 Streamable HTTP 远程模式。
+
 ### 架构升级——一键开启 Streamable HTTP 远程模式
   既然要支持远程调用，代码会不会变得复杂？
 
@@ -1296,61 +1287,533 @@ if __name__ == '__main__':
 
   在本地运行后，到 CherryStudio 里验证（URL 本地要填 http://127.0.0.1:8001/mcp） ，这里要填 /mcp 的后缀。MCP 连接成功后再去对话。
 
-  得益于 Streamable HTTP 的流式特性，工具调用过程支持实时日志输出与中间状态反馈，体验比 Stdio 模式更丰富（尤其在复杂工具场景下）。
+  Streamable HTTP 让工具服务具备网络访问入口。需要展示日志或进度时，还要由服务端显式上报、客户端接收；Stdio 同样可以承载协议支持的通知，并不是切换到 HTTP 才具备进度反馈能力。
+
+## mcp_advanced
+  上一节中，我们已经把天气查询函数变成了一个独立的 MCP Server，并用 CherryStudio 成功调用。但 CherryStudio 替我们完成了客户端的工作，如果换成自己用 LangGraph 编写的 Agent，工具该如何接进去？
+
+  这一章，我们就从“工具提供者”切换到“工具使用者”，把 MCP Server 接到自己的 Agent 上。先拆解一次客户端的通信过程，再用适配层完成工具发现与调用。
+
+### 先理清架构：谁是大脑，谁是插座？
+  MCP 的接入过程可以类比成给电脑插外设：Agent 是使用外设的程序，MCP Client 是连接和通信的驱动，MCP Server 则是暴露具体能力的设备接口。
+
+```text
+用户提出问题
+    ↓
+Agent / LangGraph：决定是否调用工具、调用哪个工具
+    ↓
+MCP Client：发现工具、发送参数、接收结果
+    ↓ Stdio / Streamable HTTP
+MCP Server：校验参数、执行工具
+    ↓
+第三方 API / 数据库 / 内部业务系统
+```
+
+  这里要区分两个概念：**模型负责生成调用意图，客户端和服务端负责真正执行。** 模型输出一个 `get_weather(city="北京")` 的工具调用，并不代表它自己连接了天气服务。
+
+| 组件 | 负责什么 | 不负责什么 |
+| --- | --- | --- |
+| LangGraph | 状态管理、节点执行、条件跳转 | 不会自动知道远端有哪些工具 |
+| MCP Client | 连接服务、发现工具、发起调用 | 不代替模型决定业务流程 |
+| MCP Server | 暴露工具并执行具体业务 | 不必包含一个自主决策的 Agent |
+| 适配层 | 把 MCP 工具转换成 LangChain 工具 | 不代替 MCP Server 实现业务 |
+
+  因此，自己搭建 MCP Server，通常是在封装自己的业务能力，或者把服务商 API 转换为可复用的工具。如果服务商已经提供 MCP Server，Agent 也可以直接连接它。
+
+### 版本说明：先把两套接口分开
+  这一系列是逐步记录的学习笔记，MCP SDK 与 LangChain 的接口也在变化。为了让前面的代码还能接着运行，这里明确区分两条路线：
+
+| 路线 | 本文使用的接口 | 适用范围 |
+| --- | --- | --- |
+| 原理演示 | MCP Python SDK 1.x 的 `ClientSession`、`stdio_client`、`streamablehttp_client` | 与前文 `mcp.server.fastmcp.FastMCP` 示例配套 |
+| 当前 LangChain 接入 | `langchain.mcp.MCPAdapter` | 新项目的工具适配示例，当前为 Beta |
+
+  前一条路线请在独立虚拟环境中安装 `mcp>=1.28,<2`。后一条路线请另建环境，安装 `langchain[mcp]>=1.4,<2`、`langchain-openai` 和 `langgraph`，交给依赖管理器解析兼容版本，并保存锁文件。不要把两条路线的安装命令直接叠到同一个环境中。
+
+  另外，前文提到的独立库 `langchain-mcp-adapters`，其官方仓库现已标注停止活跃维护，并提供了迁移到 `langchain.mcp` 的说明。两者都属于客户端适配层，但新旧导入路径、配置格式和生命周期管理不能混用。
+
+  版本参考：[MCP SDK 1.x](https://github.com/modelcontextprotocol/python-sdk/tree/v1.x)、[LangChain 迁移指南](https://docs.langchain.com/oss/python/migrate/langchain-mcp-adapters)。
+
+### 拆开客户端：连接、初始化、发现、调用
+  先不让模型参与。我们直接用程序调用上一节的天气工具，看看一个 MCP Client 到底做了什么。
+
+  基本步骤可以概括为：
+
+  1. 建立 Transport：打开进程管道，或者连接 HTTP 地址；
+  2. 创建并初始化 ClientSession：协商协议版本与能力；
+  3. 调用 `list_tools()`：获取工具名称、说明和参数 Schema；
+  4. 调用 `call_tool()`：提交工具名与参数，读取执行结果；
+  5. 退出上下文：释放会话和通信资源。
+
+  下面将两种 Transport 放进同一个异步上下文管理器中。保存为 `mcp_client_demo.py`，与前文的 `stdio_server.py` 放在同一目录：
+
+```python
+import asyncio
+import sys
+from contextlib import asynccontextmanager
+from datetime import timedelta
+from pathlib import Path
+from typing import Literal
+
+from mcp import ClientSession, StdioServerParameters
+from mcp.client.stdio import stdio_client
+from mcp.client.streamable_http import streamablehttp_client
 
 
+@asynccontextmanager
+async def connect_mcp(mode: Literal["stdio", "http"]):
+    # 1. 根据传输方式，创建对应的通信上下文
+    if mode == "stdio":
+        server_path = Path(__file__).with_name("stdio_server.py")
+        transport = stdio_client(
+            StdioServerParameters(
+                command=sys.executable,  # 与客户端使用同一个 Python 环境
+                args=[str(server_path)],
+            )
+        )
+    elif mode == "http":
+        # HTTP 服务需要提前在另一个终端启动
+        transport = streamablehttp_client("http://127.0.0.1:8001/mcp")
+    else:
+        raise ValueError(f"不支持的传输方式：{mode}")
+
+    # 2. Stdio 返回两个对象，HTTP 返回三个；前两个都是读写流
+    async with transport as streams:
+        read, write = streams[:2]
+        async with ClientSession(
+            read,
+            write,
+            read_timeout_seconds=timedelta(seconds=30),
+        ) as session:
+            await session.initialize()
+            yield session
 
 
+async def main():
+    # 改成 "http"，即可连接前文的远程模式服务
+    async with connect_mcp("stdio") as session:
+        # 3. 发现工具：这里为了演示，假设工具列表只有一页
+        catalog = await session.list_tools()
+        for item in catalog.tools:
+            print(f"工具名称：{item.name}")
+            print(f"工具说明：{item.description}")
+            print(f"参数结构：{item.inputSchema}")
+
+        # 4. 执行工具：参数名必须与服务端定义的 city 一致
+        result = await session.call_tool(
+            "get_weather",
+            arguments={"city": "北京"},
+        )
+        if result.isError:
+            raise RuntimeError(f"天气工具执行失败：{result.content}")
+
+        # MCP 结果可能包含多个内容块，不能假定第一个一定是文本
+        for block in result.content:
+            if block.type == "text":
+                print(f"工具结果：{block.text}")
 
 
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+  代码解析：
+
+  * `async with` 是资源管理边界。会话先关闭，外层 Transport 再关闭；Stdio 子进程的清理也由对应的上下文管理器处理。
+  * `initialize()` 是 SDK 1.x 客户端初始化的一部分，不能打开管道后就直接调用工具。
+  * `list_tools()` 拿到的是工具说明书，包括 `name`、`description`、`inputSchema`。如果服务端返回分页游标，还需要继续获取后续页。
+  * `call_tool()` 返回 MCP 结果对象，要区分工具返回的错误与连接超时、网络中断等异常。图片、文件等内容也需要按类型处理。
+
+  注意生命周期：**同一个 Stdio 连接可以调用多次工具，不需要每次重启进程。** 上面在退出 `connect_mcp()` 后，`session` 就不应继续使用了。
+
+  这只是展示双模连接与基本错误检查的最小客户端。生产系统还需要处理认证、分页、断线恢复、取消和监控等问题。客户端接口参考：[MCP SDK 1.x 客户端文档](https://py.sdk.modelcontextprotocol.io/v1/client/)。
+
+### 从 MCP 工具到 Agent 工具：适配层做了什么？
+  上面的程序能够调用工具，但还不会自主决定何时调用。接下来，我们要把远端的工具说明书交给模型，再把模型产生的调用请求交回 MCP Client。
+
+```text
+list_tools() 获取 MCP 工具目录
+    ↓
+转换成 LangChain 工具对象
+    ↓
+模型看到工具描述与参数结构，产生 tool_calls
+    ↓
+工具对象通过 MCP Client 调用远端工具
+    ↓
+执行结果转换为 ToolMessage，回到 Agent 循环
+```
+
+  这就是适配层的工作。它省去了我们逐个编写远程代理函数、转换参数和包装结果的重复劳动。
+
+  对于当前的 LangChain 接入方式，可以使用 `MCPAdapter`。下面是一个独立示例，使用前面已经运行在 8001 端口的天气服务；模型配置沿用前文的 `config.py`：
+
+```python
+import asyncio
+
+from config import OPENAI_API_KEY
+from langchain.agents import create_agent
+from langchain.mcp import MCPAdapter
+from langchain.tools import tool
+from langchain_openai import ChatOpenAI
 
 
+@tool
+def get_temperature_tip(temperature: float) -> str:
+    """根据摄氏温度给出简单的穿衣建议。"""
+    return "建议加一件外套" if temperature < 20 else "可以穿轻薄衣物"
 
 
+async def main():
+    llm = ChatOpenAI(
+        model="deepseek-chat",
+        api_key=OPENAI_API_KEY,
+        base_url="https://api.deepseek.com",
+    )
+
+    async with MCPAdapter("http://127.0.0.1:8001/mcp") as adapter:
+        remote_tools = await adapter.list_tools()
+        tools = [get_temperature_tip, *remote_tools]
+        agent = create_agent(
+            model=llm,
+            tools=tools,
+            system_prompt="你是天气助手。查询天气后，根据气温给出穿衣建议。",
+        )
+        result = await agent.ainvoke(
+            {"messages": [{"role": "user", "content": "北京天气如何，穿什么合适？"}]},
+            config={"recursion_limit": 20},
+        )
+        print(result["messages"][-1].content)
 
 
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+  这里有两个不同来源的工具：`get_temperature_tip` 是当前进程中的 Python 函数，`get_weather` 则来自 MCP Server，但对 Agent 来说，它们都已经成为统一的 LangChain 工具。
+
+  注意：“直接注册 / MCP 接入”与“本地 / 远程”是两个维度。一个直接注册的工具也可以在函数内部请求远程 API，一个 MCP 工具也可以通过 Stdio 在同一台机器上执行。
+
+  前文亲手编写 ReAct 循环，是为了理解 `agent -> tools -> agent`。这里用 `create_agent()` 复用这套循环；如果保留手写的图，也可以把适配后的工具交给 `bind_tools()` 和 `ToolNode`。参考：[LangChain MCP 工具接入](https://docs.langchain.com/oss/python/langchain/mcp/tools)。
+
+### 多服务接入：一张工具表，多个能力来源
+  一个 Agent 不必只连接一个 MCP Server，也不必把所有第三方服务都转发到自己搭建的 Server 上。
+
+  当前 `MCPAdapter` 可以接收 `mcpServers` 配置。例如，下面同时连接本地脚本和 HTTP 服务；这是替换上一节 Adapter 初始化部分的配置片段：
+
+```python
+from pathlib import Path
+import sys
+
+connections = {
+    "mcpServers": {
+        "weather_local": {
+            "command": sys.executable,
+            "args": [str(Path("stdio_server.py").resolve())],
+        },
+        "weather_remote": {
+            "url": "http://127.0.0.1:8001/mcp",
+        },
+    }
+}
+
+# 使用 MCPAdapter(connections) 替换 MCPAdapter("http://...") 即可
+```
+
+  这个例子故意用两种方式连接天气服务，便于观察协议差异。实际项目中，可以换成搜索、知识库、工单系统等不同能力。多服务配置会为工具名添加服务前缀，处理不同服务中同名工具的冲突。参考：[连接与多服务配置](https://docs.langchain.com/oss/python/langchain/mcp/connections)。
+
+  工具来源多了，不代表要把所有工具一次性塞给模型。更合理的方式是按任务筛选工具，或者按领域分配给不同专家，这也是下一章多智能体要解决的问题。
+
+### 从跑通到部署：哪些东西应该长期运行？
+  一个典型的服务器部署结构如下：
+
+```text
+浏览器前端（Vue / React / Streamlit）
+    ↓ HTTP 请求，SSE 或 WebSocket 接收执行事件
+Agent 后端（LangGraph）
+    ├─ 直接调用业务函数或服务商 API
+    ├─ MCP Client → 第三方 MCP Server
+    └─ MCP Client → 自建 MCP Server → 内部业务系统
+```
+
+  MCP Server 可以与 Agent 部署在同一台机器，也可以分开部署。需要远程共享的服务，通过 Streamable HTTP 提供接口，使用 Docker、systemd 等管理进程的启动、重启与日志。服务要持续可用，但客户端不必一直保持一条连接。
+
+  部署时主要关注三件事：
+
+  1. 凭据与权限：服务商 API Key 放在服务端环境变量或密钥管理系统中；远程接口配置 HTTPS、认证与工具权限，服务端校验调用者身份。
+  2. 超时与重试：查询工具可以按策略重试；创建订单、发消息等有副作用的操作，需要幂等键或状态核查，避免断线重试造成重复执行。
+  3. 业务状态：用户身份、会话历史与任务进度由业务系统或 Agent 状态管理，不能假定 HTTP 连接本身替我们保存了这些信息。
+
+  如果多个 Agent、多个团队需要共享大量工具，还可以增加 MCP 网关，统一认证、限流和审计。它是集中管理的一层，不是每个 MCP 项目都必须添加的一层。
+
+### 流式接入：MCP 进度不等于前端文字流
+  Streamable HTTP 中的“Streamable”，并不代表工具函数返回的字符串会自动逐字显示，也不代表 MCP Server 会自动产生模型的 Token。
+
+| 流的来源 | 内容 | 如何进入前端 |
+| --- | --- | --- |
+| 大模型 | 消息片段、工具调用参数片段 | LangGraph `messages` 流 |
+| 图的节点 | 节点返回的状态更新 | LangGraph `updates` 流 |
+| 工具运行过程 | 日志、进度通知 | 客户端接收后，按需转换成 `custom` 事件 |
+
+  工具进度需要服务端显式上报、客户端接收并转发。浏览器这一侧，再由 Agent 后端使用 SSE 或 WebSocket 推送。这和 MCP Client 到 MCP Server 的连接是两段独立的通信链路。
+
+## multi_agent
+  前面在 LangGraph 进阶中，我们已经手写过 Supervisor 调度专家的协作图。但那个例子主要解决“下一个节点由谁执行”，还没有完整解决另一个问题：**不同专家应该看到哪些信息，最终又应该交回什么结果？**
+
+  如果所有专家都读取同一份不断增长的消息历史，就相当于把公司的全部邮件抄送给每一个员工。人虽然分工了，信息却没有分工。这一章，我们继续把多智能体从“多个节点”推进到“有边界的协作系统”。
+
+### 多智能体到底拆的是什么？
+  拆分 Agent，通常是在拆分职责、上下文、工具权限与执行策略，而不一定是在拆分模型。
+
+| 维度 | 日志专家 | 方案专家 | 总控 |
+| --- | --- | --- | --- |
+| 职责 | 获取日志，分析故障证据 | 查询运维手册，提出处理步骤 | 分配任务，汇总结果 |
+| 上下文 | 当前日志任务与必要背景 | 当前处理任务与故障摘要 | 用户请求与专家报告 |
+| 工具 | 日志查询 | 手册检索 | 调用两个专家 |
+| 输出 | 现象、证据、判断、不确定项 | 建议步骤、风险与验证方式 | 面向用户的完整回答 |
+
+  三个 Agent 可以使用同一个模型服务，也可以使用不同模型。它们甚至可以运行在同一个 Python 进程中，多智能体并不等于必须部署多台服务器。
+
+  同样，一个调用了 LLM 的节点也未必就是完整 Agent。如果它只做一次分类或总结，可以把它视为模型节点；需要自主选择工具、多轮执行时，再给它完整的 Agent 循环。
+
+### 常见协作方式：调度、交接与固定流程
+
+| 模式 | 执行方式 | 适合的任务 |
+| --- | --- | --- |
+| Supervisor / Subagents | 总控调用专家，专家返回结果，总控继续处理 | 研究、运维、跨领域问答 |
+| Handoffs | 当前 Agent 把后续对话控制权交给另一位专家 | 客服转接、分阶段咨询 |
+| 固定工作流 | 代码规定先后顺序或并行分支 | 检索后审核、生成后校验、多来源分析 |
+
+  可以把第一种理解为“经理派活，员工交报告”；第二种是“把客户转接给专门的负责人”；第三种则是“按已经确定的工序执行”。
+
+  固定工作流与自主决策可以组合：外层用 LangGraph 固定执行顺序，内层的专家自行选择工具。没有必要让模型连“已经确定的下一步”也重新决定一次。
+
+### Agent-as-a-Tool：把专家当作工具调用
+  还记得前面的 Graph-as-a-Tool 吗？我们把一张子图封装成工具，交给主 Agent 调用。Agent-as-a-Tool 延续同一个思路：把专家自己的 ReAct 循环封装成工具，主 Agent 只需要提交任务并等待报告。
+
+```text
+用户 → Supervisor
+           ├─ analyze_logs(task) → 日志专家 → 日志工具
+           └─ consult_runbook(task) → 方案专家 → 手册工具
+                 ↓ 返回各自的报告
+           Supervisor 汇总 → 用户
+```
+
+  下面用模拟日志和手册数据，把重点放在协作机制上。示例沿用 `config.py` 中的模型凭据，安装 `langchain` 1.x、`langchain-openai` 与 `langgraph` 后，可以独立运行：
+
+```python
+import asyncio
+
+from config import OPENAI_API_KEY
+from langchain.agents import create_agent
+from langchain.tools import tool
+from langchain_openai import ChatOpenAI
+from langgraph.checkpoint.memory import InMemorySaver
 
 
+# 1. 准备两个不同领域的工具，数据均为模拟
+@tool
+def read_service_logs(service: str) -> str:
+    """查询服务的模拟错误日志，分析故障时使用。"""
+    return f"[模拟日志] {service}: worker 被 OOM killer 终止，内存达到容器上限。"
 
 
+@tool
+def search_runbook(query: str) -> str:
+    """检索模拟运维手册，获取故障检查与恢复建议。"""
+    return (
+        "[模拟手册] OOM：先检查内存曲线、容器限制、并发与批处理大小；"
+        "保留故障证据，再评估扩容或降低并发。重启只能临时恢复，不能证明根因已解决。"
+    )
 
 
+# 2. 共用模型配置，各专家拥有自己的提示与工具列表
+llm = ChatOpenAI(
+    model="deepseek-chat",
+    api_key=OPENAI_API_KEY,
+    base_url="https://api.deepseek.com",
+)
+
+log_agent = create_agent(
+    model=llm,
+    tools=[read_service_logs],
+    system_prompt=(
+        "你是日志分析专家。先查日志，再报告现象、证据、判断与不确定项。"
+        "保留数据中的模拟标记，不把推测写成事实，不执行修复。"
+    ),
+)
+
+runbook_agent = create_agent(
+    model=llm,
+    tools=[search_runbook],
+    system_prompt=(
+        "你是运维方案专家。先检索手册，再给出检查步骤、处理建议与验证方法。"
+        "保留模拟标记；你没有操作服务器的权限，不得声称已经完成修复。"
+    ),
+)
 
 
+# 3. 专家工具只传入任务，返回报告，不把整段内部历史带回总控
+@tool
+async def analyze_logs(task: str) -> str:
+    """委派日志专家，查询指定服务的日志并返回故障分析报告。"""
+    result = await log_agent.ainvoke(
+        {"messages": [{"role": "user", "content": task}]},
+        config={"recursion_limit": 12},
+    )
+    return result["messages"][-1].content
 
 
+@tool
+async def consult_runbook(task: str) -> str:
+    """委派方案专家，根据故障现象查询运维手册并返回处理建议。"""
+    result = await runbook_agent.ainvoke(
+        {"messages": [{"role": "user", "content": task}]},
+        config={"recursion_limit": 12},
+    )
+    return result["messages"][-1].content
 
 
+# 4. 总控负责用户会话，专家默认每次接收一份新的任务输入
+supervisor = create_agent(
+    model=llm,
+    tools=[analyze_logs, consult_runbook],
+    system_prompt=(
+        "你是运维总控。先委派日志专家获取证据，再把必要的故障摘要交给方案专家。"
+        "最后汇总现象、证据、建议和未确认事项。"
+        "调用专家时必须说明服务名与具体任务，保留模拟数据标记。"
+        "当前只有查询与建议能力，不得声称已经重启或修复服务。"
+    ),
+    checkpointer=InMemorySaver(),
+)
 
 
+async def main():
+    result = await supervisor.ainvoke(
+        {"messages": [{"role": "user", "content": "payment-api 容器反复退出，请分析原因并给出处理建议。"}]},
+        config={
+            "configurable": {"thread_id": "ops-demo-001"},
+            "recursion_limit": 30,
+        },
+    )
+    print(result["messages"][-1].content)
 
 
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+  预期流程是：总控委派日志专家，日志专家查日志并报告 OOM 现象；总控把这个故障摘要交给方案专家，获得检查建议后汇总回答。调用路径由模型选择，具体措辞和调用次数可能变化；如果业务要求严格按这个顺序执行，就应该用固定的图边来约束。
+
+  这个实现与前面的共享消息版本有一个关键区别：专家在自己的局部消息列表中完成工具调用，总控收到的只有最终报告。工具调用消息与对应的 `ToolMessage` 留在专家内部，不需要把半段调用历史搬到主会话中。实现模式参考：[LangChain 子智能体](https://docs.langchain.com/oss/python/langchain/multi-agent/subagents)。
+
+### 上下文隔离：派任务，而不是转发全部聊天记录
+  假设用户先讨论了十轮数据库问题，再问“查一下 payment-api 为什么退出”。日志专家通常只需要服务名、时间范围、环境和故障现象，并不需要前十轮无关聊天。
+
+  因此，总控派发的内容应该像一张任务单：
+
+```text
+任务：分析 payment-api 在测试环境反复退出的原因。
+范围：最近 30 分钟，只读查询。
+已知现象：容器反复重启。
+需要返回：关键日志、证据支持的判断、尚未确认的事项。
+```
+
+  隔离也不能走向另一个极端：只发“分析一下”却不带服务名，专家自然无法工作。总控要做的是提取必要背景，并明确交付要求。
+
+  当前示例把专家的 `content` 当作文本报告。任务复杂后，可以进一步约定结构化字段，例如 `summary`、`evidence`、`uncertainties`，并校验输出。这样后续节点才能按字段处理，而不必反复猜测一大段自然语言的意思。
+
+### 并行协作：能同时做的任务，不必排队
+  前面的运维任务存在依赖：先查日志，才能针对实际故障查询手册，因此应该串行。另一类任务则彼此独立，例如同时做技术方案的成本分析与风险分析，最后汇总。
+
+  对于固定的并行任务，可以直接用 LangGraph 的分支与汇合。下面用两个模拟分析节点展示控制流，实际项目中把节点函数体替换成专家的 `ainvoke()` 即可：
+
+```python
+import asyncio
+from typing import TypedDict
+
+from langgraph.graph import StateGraph, START, END
 
 
+class ReviewState(TypedDict):
+    requirement: str
+    cost_report: str
+    risk_report: str
+    final_report: str
 
 
+async def analyze_cost(state: ReviewState):
+    return {"cost_report": f"[模拟成本分析] {state['requirement']}：统计模型调用、存储与运维成本。"}
 
+
+async def analyze_risk(state: ReviewState):
+    return {"risk_report": f"[模拟风险分析] {state['requirement']}：检查权限隔离、失败恢复与重复执行。"}
+
+
+def summarize(state: ReviewState):
+    # 汇合后，两份报告都已经写入 State
+    return {"final_report": state["cost_report"] + "\n" + state["risk_report"]}
+
+
+builder = StateGraph(ReviewState)
+builder.add_node("cost", analyze_cost)
+builder.add_node("risk", analyze_risk)
+builder.add_node("summary", summarize)
+
+# 同一个起点激活两个分支
+builder.add_edge(START, "cost")
+builder.add_edge(START, "risk")
+
+# 列表形式表示等待两个分支都结束，再进入汇总节点
+builder.add_edge(["cost", "risk"], "summary")
+builder.add_edge("summary", END)
+app = builder.compile()
+
+
+async def main():
+    result = await app.ainvoke({"requirement": "部署一个内部知识库 Agent"})
+    print(result["final_report"])
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+  这里让两个分支写不同的字段，避免同时覆盖同一个值。如果多个并行节点都要向 `reports` 列表追加内容，就需要为该字段声明合并规则，例如 `Annotated[list[str], operator.add]`；汇总时再按任务编号整理顺序，不能把并发结果的到达顺序当成业务顺序。
+
+  另一个容易混淆的地方：函数写成 `async def`，不代表任务已经并行，也不代表用户可以在后台任务运行期间继续聊天。是否并行由调度和等待方式决定；后台任务还需要任务状态、结果存储与取消机制。图的执行与状态合并参考：[LangGraph Graph API](https://docs.langchain.com/oss/python/langgraph/graph-api)。
+
+### 多智能体 + MCP：职责分工与能力复用
+  把这两章连起来看，职责就很清晰了：多智能体负责“谁来处理”，MCP 负责“工具怎么接入”。
+
+```text
+Supervisor
+    ├─ 日志专家 → 日志 MCP 工具
+    ├─ 知识专家 → 内部知识库 MCP 工具
+    └─ 方案专家 → 文档检索工具
+```
+
+  可以先从不同 MCP Server 加载工具，再把对应工具列表传给各自的 `create_agent()`。这样工具服务可以独立维护，专家的 Prompt 和执行逻辑也能独立调整。
+
+  但分配工具不等于完成权限控制。不给专家绑定重启工具，可以减少误调用；真正的身份认证与授权仍应由工具服务校验。需要执行重启、删除、发送等操作时，再接入前面学过的人工审批机制。
+
+### 从协作 Demo 到可维护系统
+  多几个 Agent 不会自动提高效果。每次委派都会增加模型调用、延迟和上下文传递，也可能让错误在专家之间传播。只有职责、工具或上下文确实需要分开时，拆分才有意义。
+
+  落到工程实现，重点关注以下几件事：
+
+| 问题 | 处理方式 |
+| --- | --- |
+| 总控反复委派，迟迟不结束 | 设置递归步数、总耗时与调用预算，明确失败退出条件 |
+| 专家失败被包装成成功报告 | 返回明确的失败状态，保留错误信息，由总控决定重试或降级 |
+| 重启后会话丢失 | `InMemorySaver` 仅用于内存演示，持久化需要数据库检查点 |
+| 所有专家共享敏感信息 | 按任务传递必要字段，在服务端实施权限控制 |
+| 看不到是哪位专家出错 | 为一次请求关联 Trace，记录专家、工具、耗时与结果 |
+| 用户只看到最终答案 | 消费 LangGraph 消息、节点更新与自定义进度事件，并标记事件来源 |
+
+  递归限制计算的是图的执行步数，不等于模型调用次数；调用预算和超时仍需单独管理。同样，记忆保留多久、哪些信息需要跨任务共享，也应在设计时明确，而不是把所有消息无限追加。持久化机制参考：[LangGraph Persistence](https://docs.langchain.com/oss/python/langgraph/persistence)。
+
+  至此，我们把整条链路串了起来：LangGraph 管理执行与状态，Agent 根据任务选择动作，MCP 连接可复用的工具，多个专家通过清晰的输入与输出协作，前端再把执行过程展示给用户。
 
 
 
   参考：[agent-craft](https://github.com/Annyfee/agent-craft)
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
