@@ -1,0 +1,1 @@
+import{aD as i,aE as l,s as t}from"./app-pHEHOkXX.js";function r(s){const e=t(!1),{top:o}=i(s);return l(s,([{isIntersecting:n}])=>{e.value=n}),{show:()=>{e.value||window.scrollTo(0,o.value)}}}export{r as u};
