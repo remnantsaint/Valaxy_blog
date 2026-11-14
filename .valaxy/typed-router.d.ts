@@ -96,6 +96,7 @@ declare module 'vue-router/auto-routes' {
     '/posts/有效的括号': RouteRecordInfo<'/posts/有效的括号', '/posts/有效的括号', Record<never, never>, Record<never, never>>,
     '/posts/有效的字母异位词': RouteRecordInfo<'/posts/有效的字母异位词', '/posts/有效的字母异位词', Record<never, never>, Record<never, never>>,
     '/posts/预测数值型数据：回归': RouteRecordInfo<'/posts/预测数值型数据：回归', '/posts/预测数值型数据：回归', Record<never, never>, Record<never, never>>,
+    '/posts/运维学习': RouteRecordInfo<'/posts/运维学习', '/posts/运维学习', Record<never, never>, Record<never, never>>,
     '/posts/栈与队列互相实现': RouteRecordInfo<'/posts/栈与队列互相实现', '/posts/栈与队列互相实现', Record<never, never>, Record<never, never>>,
     '/posts/栈与队列理论基础': RouteRecordInfo<'/posts/栈与队列理论基础', '/posts/栈与队列理论基础', Record<never, never>, Record<never, never>>,
     '/posts/长度最小的子数组': RouteRecordInfo<'/posts/长度最小的子数组', '/posts/长度最小的子数组', Record<never, never>, Record<never, never>>,
